@@ -197,7 +197,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen pb-32">
+    <div className="min-h-screen pb-24">
       {/* Header */}
       <header className="bg-white shadow-md sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4">

@@ -11,41 +11,47 @@ const LLM_PROVIDER = import.meta.env.VITE_LLM_PROVIDER || 'openai';
 
 // Prompts for different categories
 const GENERATION_PROMPTS = {
-  twoLetter: `Generate a random 2-letter Akan Twi word. Return ONLY valid JSON:
+  twoLetter: `Generate a REAL Akan Twi 2-letter word. Important: The word MUST be exactly 2 letters in Twi. Return ONLY valid JSON, no other text:
 {
-  "word": "Two letter Twi word here",
-  "pronunciation": "phonetic pronunciation",
-  "definition": "English meaning",
+  "word": "Two letter Twi word (exactly 2 letters)",
+  "pronunciation": "simple phonetic pronunciation",
+  "definition": "Accurate English translation",
   "example": {
-    "twi": "Example sentence in Twi using this word",
+    "twi": "Simple 2-word Twi sentence using this word naturally",
     "english": "English translation"
   },
   "category": "twoLetter"
-}`,
+}
+
+Examples of real 2-letter Twi words: "Me" (I), "Wo" (You), "No" (The), "So" (Go)`,
   
-  threeLetter: `Generate a random 3-letter Akan Twi word. Return ONLY valid JSON:
+  threeLetter: `Generate a REAL Akan Twi 3-letter word. Important: The word MUST be exactly 3 letters in Twi. Return ONLY valid JSON:
 {
-  "word": "Three letter Twi word here",
-  "pronunciation": "phonetic pronunciation",
-  "definition": "English meaning",
+  "word": "Three letter Twi word (exactly 3 letters)",
+  "pronunciation": "simple phonetic pronunciation",
+  "definition": "Accurate English translation",
   "example": {
-    "twi": "Example sentence in Twi using this word",
+    "twi": "Simple sentence using this word naturally in context",
     "english": "English translation"
   },
   "category": "threeLetter"
-}`,
+}
+
+Examples of real 3-letter Twi words: "Ɔdɔ" (Love), "Kɔ" (Go), "Bɔ" (Hit), "Kwe" (Show)`,
   
-  sentence: `Generate a random Akan Twi phrase or short sentence (3+ words). Return ONLY valid JSON:
+  sentence: `Generate a REAL Akan Twi phrase or short sentence (3-5 words). Make sure it's grammatically correct and commonly used. Return ONLY valid JSON:
 {
-  "word": "Twi phrase/sentence here",
-  "pronunciation": "phonetic pronunciation of the phrase",
-  "definition": "English meaning",
+  "word": "Twi phrase/sentence (3-5 words)",
+  "pronunciation": "phonetic pronunciation",
+  "definition": "Accurate English meaning of the entire phrase",
   "example": {
-    "twi": "A longer example using this phrase in context",
-    "english": "English translation of the example"
+    "twi": "A longer sentence or more complex example using this phrase",
+    "english": "English translation"
   },
   "category": "sentence"
-}`
+}
+
+Important: Generate REAL Twi phrases used in everyday conversation. Examples: "Me dɔ wo" (I love you), "Ɛte sɛn" (How are you?), "Me din de" (My name is)`
 };
 
 // Call OpenAI API
