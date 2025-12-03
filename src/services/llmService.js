@@ -11,7 +11,7 @@ const LLM_PROVIDER = import.meta.env.VITE_LLM_PROVIDER || 'openai';
 
 // Prompts for different categories
 const GENERATION_PROMPTS = {
-  twoLetter: `Generate a REAL, common Akan Twi 2-letter word used in everyday conversation. Important: The word MUST be exactly 2 letters in Twi. Return ONLY valid JSON:
+  easy: `Generate a REAL, common Akan Twi 2-letter word used in everyday conversation. Important: The word MUST be exactly 2 letters in Twi. Return ONLY valid JSON:
 {
   "word": "Two letter Twi word (exactly 2 letters)",
   "pronunciation": "simple phonetic pronunciation",
@@ -20,12 +20,12 @@ const GENERATION_PROMPTS = {
     "twi": "",
     "english": ""
   },
-  "category": "twoLetter"
+  "category": "easy"
 }
 
 Use common everyday Twi words. Examples: "Me" (I), "Wo" (You), "No" (The), "So" (Go), "Se" (Say)`,
   
-  threeLetter: `Generate a REAL, common Akan Twi 3-letter word used in everyday conversation. Important: The word MUST be exactly 3 letters in Twi. Return ONLY valid JSON:
+  intermediate: `Generate a REAL, common Akan Twi 3-letter word used in everyday conversation. Important: The word MUST be exactly 3 letters in Twi. Return ONLY valid JSON:
 {
   "word": "Three letter Twi word (exactly 3 letters)",
   "pronunciation": "simple phonetic pronunciation",
@@ -34,12 +34,12 @@ Use common everyday Twi words. Examples: "Me" (I), "Wo" (You), "No" (The), "So" 
     "twi": "",
     "english": ""
   },
-  "category": "threeLetter"
+  "category": "intermediate"
 }
 
 Use common everyday Twi words. Examples: "Ɔdɔ" (Love), "Kɔ" (Go), "Bɔ" (Hit), "Kwe" (Show), "Nom" (Eat)`,
   
-  sentence: `Generate a REAL, common Akan Twi phrase or short sentence (2-4 words) used in everyday conversation. Return ONLY valid JSON:
+  difficult: `Generate a REAL, common Akan Twi phrase or short sentence (2-4 words) used in everyday conversation. Return ONLY valid JSON:
 {
   "word": "Twi phrase/sentence (2-4 words)",
   "pronunciation": "phonetic pronunciation",
@@ -48,7 +48,7 @@ Use common everyday Twi words. Examples: "Ɔdɔ" (Love), "Kɔ" (Go), "Bɔ" (Hit)
     "twi": "",
     "english": ""
   },
-  "category": "sentence"
+  "category": "difficult"
 }
 
 Use common everyday Twi phrases. Examples: "Me dɔ wo" (I love you), "Ɛte sɛn" (How are you?), "Akwaaba" (Welcome), "Medaase" (Thank you)`

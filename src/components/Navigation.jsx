@@ -1,7 +1,16 @@
-const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistory, onGenerateNew, isLoading, onChangeCategory, currentCategory }) => {
+const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistory, onGenerateNew, isLoading, onChangeCategory, currentCategory, onStartPractice, ghanaCedis }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
       <div className="max-w-2xl mx-auto px-3 py-2">
+        {/* Ghana Cedis Display */}
+        {ghanaCedis > 0 && (
+          <div className="text-center mb-2 p-2 bg-gradient-to-r from-green-100 to-yellow-100 rounded-full">
+            <p className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-yellow-600">
+              💰 {ghanaCedis} GHS
+            </p>
+          </div>
+        )}
+
         {/* Progress Indicator */}
         <div className="text-center mb-2">
           <p className="text-xs text-gray-600">
@@ -58,6 +67,14 @@ const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistor
           >
             <span>🎓</span>
             <span className="hidden sm:inline">Level</span>
+          </button>
+
+          <button
+            onClick={onStartPractice}
+            className="flex items-center gap-1 px-3 py-1.5 text-xs bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-200"
+          >
+            <span>🎮</span>
+            <span className="hidden sm:inline">Practice</span>
           </button>
 
           <button

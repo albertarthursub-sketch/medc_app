@@ -4,6 +4,9 @@ import WordCard from './components/WordCard';
 import Navigation from './components/Navigation';
 import WordHistory from './components/WordHistory';
 import CategorySelector from './components/CategorySelector';
+import PracticeMode from './components/PracticeMode';
+import RewardScreen from './components/RewardScreen';
+import JollofQuiz from './components/JollofQuiz';
 import { getTwiWords, addDynamicWord, addMultipleDynamicWords, WORD_CATEGORIES } from './data/twiWords';
 import { generateTwiWord, generateMultipleTwiWords, getCachedWord, cacheWord } from './services/llmService';
 
@@ -13,9 +16,13 @@ function App() {
   const [showHistory, setShowHistory] = useState(false);
   const [twiWords, setTwiWords] = useState([]);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('sentence');
+  const [selectedCategory, setSelectedCategory] = useState('intermediate');
   const [showCategorySelector, setShowCategorySelector] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [appMode, setAppMode] = useState('learn'); // 'learn' or 'practice'
+  const [ghanaCedis, setGhanaCedis] = useState(0);
+  const [showRewardScreen, setShowRewardScreen] = useState(false);
+  const [showJollofQuiz, setShowJollofQuiz] = useState(false);
 
   // Generate initial batch of words on app load
   useEffect(() => {
@@ -31,13 +38,13 @@ function App() {
           const filteredWords = getTwiWords(selectedCategory);
           setTwiWords(filteredWords);
         } else {
-          // Generate initial batch of 5 words per category
+          // Generate initial batch of 3 words per category
           console.log('Generating initial words...');
-          const twoLetterWords = await generateMultipleTwiWords(3, 'twoLetter', 1);
-          const threeLetterWords = await generateMultipleTwiWords(3, 'threeLetter', 100);
-          const sentenceWords = await generateMultipleTwiWords(3, 'sentence', 200);
+          const easyWords = await generateMultipleTwiWords(3, 'easy', 1);
+          const intermediateWords = await generateMultipleTwiWords(3, 'intermediate', 100);
+          const difficultWords = await generateMultipleTwiWords(3, 'difficult', 200);
           
-          const allNewWords = [...twoLetterWords, ...threeLetterWords, ...sentenceWords];
+          const allNewWords = [...easyWords, ...intermediateWords, ...difficultWords];
           
           // Cache all generated words
           allNewWords.forEach(word => cacheWord(word));
@@ -139,8 +146,74 @@ function App() {
     }
   };
 
+  const handleEarnPoints = (points) => {
+    const newTotal = ghanaCedis + points;
+    setGhanaCedis(newTotal);
+
+    // Check if reached 100 GHS milestone
+    if (newTotal >= 100 && ghanaCedis < 100) {
+      setShowRewardScreen(true);
+    }
+  };
+
+  const handleContinueToJollof = () => {
+    setShowRewardScreen(false);
+    setShowJollofQuiz(true);
+  };
+
+  const handleGhanaChoice = () => {
+    setGhanaCedis(prev => prev + 50);
+    setShowJollofQuiz(false);
+    setAppMode('learn');
+  };
+
+  const handleNigeriaChoice = () => {
+    setShowJollofQuiz(false);
+    // Show breakup message in an alert for now
+    alert('💔 I am breaking up with you 2pm tomorrow hahaha 💔\n\nThat\'s what you get for choosing Nigerian Jollof! 😭');
+    setAppMode('learn');
+  };
+
   if (showWelcome) {
     return <WelcomeScreen onContinue={() => setShowWelcome(false)} />;
+  }
+
+  // Show Practice Mode
+  if (appMode === 'practice') {
+    return (
+      <div className="min-h-screen">
+        <PracticeMode
+          words={getTwiWords('all')}
+          selectedCategory={selectedCategory}
+          onClose={() => setAppMode('learn')}
+          onEarnPoints={handleEarnPoints}
+        />
+      </div>
+    );
+  }
+
+  // Show Reward Screen at 100 GHS
+  if (showRewardScreen) {
+    return (
+      <div className="min-h-screen">
+        <RewardScreen
+          cedis={ghanaCedis}
+          onContinueToJollof={handleContinueToJollof}
+        />
+      </div>
+    );
+  }
+
+  // Show Jollof Quiz
+  if (showJollofQuiz) {
+    return (
+      <div className="min-h-screen">
+        <JollofQuiz
+          onGhanaChoice={handleGhanaChoice}
+          onNigeriaChoice={handleNigeriaChoice}
+        />
+      </div>
+    );
   }
 
   if (showCategorySelector) {
@@ -249,6 +322,8 @@ function App() {
         isLoading={isLoadingMore}
         onChangeCategory={() => setShowCategorySelector(true)}
         currentCategory={selectedCategory}
+        onStartPractice={() => setAppMode('practice')}
+        ghanaCedis={ghanaCedis}
       />
 
       {/* Word History Modal */}

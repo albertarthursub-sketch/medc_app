@@ -6,9 +6,9 @@ export let dynamicTwiWords = [];
 
 // Category definitions
 export const WORD_CATEGORIES = {
-  twoLetter: { label: "2-Letter Words", emoji: "🔤", description: "Short Twi words (2 letters)" },
-  threeLetter: { label: "3-Letter Words", emoji: "📝", description: "Medium Twi words (3 letters)" },
-  sentence: { label: "Sentences", emoji: "📖", description: "Full phrases and sentences" }
+  easy: { label: "Easy", emoji: "🟢", description: "Common 2-letter words" },
+  intermediate: { label: "Intermediate", emoji: "🟡", description: "3-letter words & phrases" },
+  difficult: { label: "Difficult", emoji: "🔴", description: "Advanced phrases" }
 };
 
 // Get all words or filter by category
