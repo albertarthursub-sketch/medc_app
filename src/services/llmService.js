@@ -11,47 +11,47 @@ const LLM_PROVIDER = import.meta.env.VITE_LLM_PROVIDER || 'openai';
 
 // Prompts for different categories
 const GENERATION_PROMPTS = {
-  twoLetter: `Generate a REAL Akan Twi 2-letter word. Important: The word MUST be exactly 2 letters in Twi. Return ONLY valid JSON, no other text:
+  twoLetter: `Generate a REAL, common Akan Twi 2-letter word used in everyday conversation. Important: The word MUST be exactly 2 letters in Twi. Return ONLY valid JSON:
 {
   "word": "Two letter Twi word (exactly 2 letters)",
   "pronunciation": "simple phonetic pronunciation",
   "definition": "Accurate English translation",
   "example": {
-    "twi": "Simple 2-word Twi sentence using this word naturally",
-    "english": "English translation"
+    "twi": "",
+    "english": ""
   },
   "category": "twoLetter"
 }
 
-Examples of real 2-letter Twi words: "Me" (I), "Wo" (You), "No" (The), "So" (Go)`,
+Use common everyday Twi words. Examples: "Me" (I), "Wo" (You), "No" (The), "So" (Go), "Se" (Say)`,
   
-  threeLetter: `Generate a REAL Akan Twi 3-letter word. Important: The word MUST be exactly 3 letters in Twi. Return ONLY valid JSON:
+  threeLetter: `Generate a REAL, common Akan Twi 3-letter word used in everyday conversation. Important: The word MUST be exactly 3 letters in Twi. Return ONLY valid JSON:
 {
   "word": "Three letter Twi word (exactly 3 letters)",
   "pronunciation": "simple phonetic pronunciation",
   "definition": "Accurate English translation",
   "example": {
-    "twi": "Simple sentence using this word naturally in context",
-    "english": "English translation"
+    "twi": "",
+    "english": ""
   },
   "category": "threeLetter"
 }
 
-Examples of real 3-letter Twi words: "Ɔdɔ" (Love), "Kɔ" (Go), "Bɔ" (Hit), "Kwe" (Show)`,
+Use common everyday Twi words. Examples: "Ɔdɔ" (Love), "Kɔ" (Go), "Bɔ" (Hit), "Kwe" (Show), "Nom" (Eat)`,
   
-  sentence: `Generate a REAL Akan Twi phrase or short sentence (3-5 words). Make sure it's grammatically correct and commonly used. Return ONLY valid JSON:
+  sentence: `Generate a REAL, common Akan Twi phrase or short sentence (2-4 words) used in everyday conversation. Return ONLY valid JSON:
 {
-  "word": "Twi phrase/sentence (3-5 words)",
+  "word": "Twi phrase/sentence (2-4 words)",
   "pronunciation": "phonetic pronunciation",
   "definition": "Accurate English meaning of the entire phrase",
   "example": {
-    "twi": "A longer sentence or more complex example using this phrase",
-    "english": "English translation"
+    "twi": "",
+    "english": ""
   },
   "category": "sentence"
 }
 
-Important: Generate REAL Twi phrases used in everyday conversation. Examples: "Me dɔ wo" (I love you), "Ɛte sɛn" (How are you?), "Me din de" (My name is)`
+Use common everyday Twi phrases. Examples: "Me dɔ wo" (I love you), "Ɛte sɛn" (How are you?), "Akwaaba" (Welcome), "Medaase" (Thank you)`
 };
 
 // Call OpenAI API
