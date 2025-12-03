@@ -4,6 +4,9 @@
 
 import { VERIFIED_TWI_DICTIONARY, getRandomWords } from '../data/verifiedTwiDictionary';
 
+// Track which words have been used in current session
+const usedWordIds = new Set();
+
 const API_KEYS = {
   openai: import.meta.env.VITE_OPENAI_API_KEY,
   anthropic: import.meta.env.VITE_ANTHROPIC_API_KEY,
@@ -144,7 +147,20 @@ export const generateTwiWord = async (id, category = 'intermediate') => {
     const verifiedWords = VERIFIED_TWI_DICTIONARY[category] || VERIFIED_TWI_DICTIONARY.intermediate;
     
     if (verifiedWords && verifiedWords.length > 0) {
-      const randomWord = verifiedWords[Math.floor(Math.random() * verifiedWords.length)];
+      // Find a word we haven't used yet in this session
+      let availableWords = verifiedWords.filter((word, idx) => !usedWordIds.has(`${category}-${idx}`));
+      
+      // If we've used all words, reset and start over
+      if (availableWords.length === 0) {
+        usedWordIds.clear();
+        availableWords = verifiedWords;
+      }
+      
+      // Pick random word from available ones
+      const randomWord = availableWords[Math.floor(Math.random() * availableWords.length)];
+      const wordIndex = verifiedWords.indexOf(randomWord);
+      usedWordIds.add(`${category}-${wordIndex}`);
+      
       return {
         id,
         ...randomWord,
@@ -199,15 +215,29 @@ export const generateTwiWord = async (id, category = 'intermediate') => {
   }
 };
 
-// Generate multiple words at once - uses verified dictionary
+// Generate multiple words at once - uses verified dictionary with NO repeats
 export const generateMultipleTwiWords = async (count, category = 'intermediate', startId = 1) => {
-  const words = [];
   const verifiedWords = VERIFIED_TWI_DICTIONARY[category] || [];
   
   // If we have verified words, use them directly (much faster and accurate)
   if (verifiedWords.length > 0) {
-    const shuffled = [...verifiedWords].sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, Math.min(count, verifiedWords.length));
+    // Shuffle while avoiding repeats
+    let availableWords = verifiedWords.filter((word, idx) => !usedWordIds.has(`${category}-${idx}`));
+    
+    // If we've used all words, reset
+    if (availableWords.length === 0) {
+      usedWordIds.clear();
+      availableWords = [...verifiedWords];
+    }
+    
+    const shuffled = availableWords.sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, Math.min(count, availableWords.length));
+    
+    // Mark these as used
+    selected.forEach(word => {
+      const idx = verifiedWords.indexOf(word);
+      usedWordIds.add(`${category}-${idx}`);
+    });
     
     return selected.map((word, index) => ({
       id: startId + index,
@@ -220,6 +250,7 @@ export const generateMultipleTwiWords = async (count, category = 'intermediate',
   }
 
   // Fallback to LLM if needed
+  const words = [];
   for (let i = 0; i < count; i++) {
     try {
       const word = await generateTwiWord(startId + i, category);
@@ -247,4 +278,9 @@ export const getCachedWord = (id) => {
 
 export const clearCache = () => {
   localStorage.removeItem('generatedWords');
+};
+
+// Reset used words tracker (for new sessions or when user wants fresh start)
+export const resetUsedWords = () => {
+  usedWordIds.clear();
 };
