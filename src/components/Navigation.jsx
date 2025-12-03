@@ -1,4 +1,4 @@
-const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistory, onGenerateNew, isLoading, onChangeCategory, currentCategory, onStartPractice, ghanaCedis }) => {
+const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistory, onGenerateNew, isLoading, onChangeCategory, currentCategory, onStartPractice, ghanaCedis, onShowSearch }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
       <div className="max-w-2xl mx-auto px-3 py-2">
@@ -67,6 +67,14 @@ const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistor
           >
             <span>🎓</span>
             <span className="hidden sm:inline">Level</span>
+          </button>
+
+          <button
+            onClick={onShowSearch}
+            className="flex items-center gap-1 px-3 py-1.5 text-xs bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-full font-medium transition-colors duration-200"
+          >
+            <span>📚</span>
+            <span className="hidden sm:inline">Search</span>
           </button>
 
           <button

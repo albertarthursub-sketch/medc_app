@@ -7,6 +7,7 @@ import CategorySelector from './components/CategorySelector';
 import PracticeMode from './components/PracticeMode';
 import RewardScreen from './components/RewardScreen';
 import JollofQuiz from './components/JollofQuiz';
+import WordSearch from './components/WordSearch';
 import { getTwiWords, addDynamicWord, addMultipleDynamicWords, WORD_CATEGORIES } from './data/twiWords';
 import { generateTwiWord, generateMultipleTwiWords, getCachedWord, cacheWord } from './services/llmService';
 
@@ -23,6 +24,7 @@ function App() {
   const [ghanaCedis, setGhanaCedis] = useState(0);
   const [showRewardScreen, setShowRewardScreen] = useState(false);
   const [showJollofQuiz, setShowJollofQuiz] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   // Generate initial batch of words on app load
   useEffect(() => {
@@ -324,6 +326,7 @@ function App() {
         currentCategory={selectedCategory}
         onStartPractice={() => setAppMode('practice')}
         ghanaCedis={ghanaCedis}
+        onShowSearch={() => setShowSearch(true)}
       />
 
       {/* Word History Modal */}
@@ -332,6 +335,13 @@ function App() {
           words={twiWords}
           onSelectWord={handleSelectWord}
           onClose={() => setShowHistory(false)}
+        />
+      )}
+
+      {/* Word Search Modal */}
+      {showSearch && (
+        <WordSearch
+          onClose={() => setShowSearch(false)}
         />
       )}
     </div>
