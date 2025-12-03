@@ -9,49 +9,37 @@ const API_KEYS = {
 
 const LLM_PROVIDER = import.meta.env.VITE_LLM_PROVIDER || 'openai';
 
-// Prompts for different categories
+// Prompts for different categories with verified Twi words
 const GENERATION_PROMPTS = {
-  easy: `Generate a REAL, common Akan Twi 2-letter word used in everyday conversation. Important: The word MUST be exactly 2 letters in Twi. Return ONLY valid JSON:
+  easy: `You are a Twi language expert. Generate ONE authentic Akan Twi word that is exactly 2 letters long. 
+CRITICAL: Only use VERIFIED Twi words from this list: Me, Wo, No, So, Se, Bi, Ni, De, Te, Ha, Ka, Ma, Pa, Oo, Ee, Aa.
+Choose one NOT yet used frequently. Return ONLY valid JSON with NO extra text:
 {
-  "word": "Two letter Twi word (exactly 2 letters)",
-  "pronunciation": "simple phonetic pronunciation",
-  "definition": "Accurate English translation",
-  "example": {
-    "twi": "",
-    "english": ""
-  },
+  "word": "authentic 2-letter Twi word",
+  "pronunciation": "phonetic IPA or simple pronunciation like 'meh' or 'woh'",
+  "definition": "precise English meaning",
   "category": "easy"
-}
-
-Use common everyday Twi words. Examples: "Me" (I), "Wo" (You), "No" (The), "So" (Go), "Se" (Say)`,
+}`,
   
-  intermediate: `Generate a REAL, common Akan Twi 3-letter word used in everyday conversation. Important: The word MUST be exactly 3 letters in Twi. Return ONLY valid JSON:
+  intermediate: `You are a Twi language expert. Generate ONE authentic Akan Twi word that is 3-4 letters long.
+CRITICAL: Only use VERIFIED real Twi words like: Kɔ (go), Nom (eat), Odɔ (love), Ani (come), Dua (sleep), Kɔm (hold), Pa (hide), Pem (push), Tsi (buy), Soa (pull), Gyina (stand), Fata (finish), Wɔ (be), Nya (know), Tumi (able).
+Choose one NOT yet used. Return ONLY valid JSON with NO extra text:
 {
-  "word": "Three letter Twi word (exactly 3 letters)",
-  "pronunciation": "simple phonetic pronunciation",
-  "definition": "Accurate English translation",
-  "example": {
-    "twi": "",
-    "english": ""
-  },
+  "word": "authentic 3-4 letter Twi word",
+  "pronunciation": "phonetic pronunciation like 'kaw' or 'nohm'",
+  "definition": "precise English meaning",
   "category": "intermediate"
-}
-
-Use common everyday Twi words. Examples: "Ɔdɔ" (Love), "Kɔ" (Go), "Bɔ" (Hit), "Kwe" (Show), "Nom" (Eat)`,
+}`,
   
-  difficult: `Generate a REAL, common Akan Twi phrase or short sentence (2-4 words) used in everyday conversation. Return ONLY valid JSON:
+  difficult: `You are a Twi language expert. Generate ONE authentic everyday Twi greeting, phrase or short sentence (2-4 words).
+CRITICAL: Only use VERIFIED real Twi phrases like: Maakye (good morning), Meakye (I'm fine), Akwaaba (welcome), Medaase (thank you), Ɛte sɛn (how are you?), Me din de (my name is), Wo din sɛn (what is your name?), Me dɔ wo (I love you), Oo, eye (yes, okay), Daabi (no).
+Choose one NOT yet used. Return ONLY valid JSON with NO extra text:
 {
-  "word": "Twi phrase/sentence (2-4 words)",
-  "pronunciation": "phonetic pronunciation",
-  "definition": "Accurate English meaning of the entire phrase",
-  "example": {
-    "twi": "",
-    "english": ""
-  },
+  "word": "authentic Twi phrase or greeting (2-4 words)",
+  "pronunciation": "phonetic pronunciation like 'mah-kyeh' or 'ah-kwah-bah'",
+  "definition": "accurate English translation of entire phrase",
   "category": "difficult"
-}
-
-Use common everyday Twi phrases. Examples: "Me dɔ wo" (I love you), "Ɛte sɛn" (How are you?), "Akwaaba" (Welcome), "Medaase" (Thank you)`
+}`
 };
 
 // Call OpenAI API
