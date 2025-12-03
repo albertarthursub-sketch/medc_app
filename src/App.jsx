@@ -4,30 +4,60 @@ import WordCard from './components/WordCard';
 import Navigation from './components/Navigation';
 import WordHistory from './components/WordHistory';
 import CategorySelector from './components/CategorySelector';
-import { staticTwiWords, getTwiWords, addDynamicWord, WORD_CATEGORIES } from './data/twiWords';
-import { generateTwiWord, getCachedWord, cacheWord } from './services/llmService';
+import { getTwiWords, addDynamicWord, addMultipleDynamicWords, WORD_CATEGORIES } from './data/twiWords';
+import { generateTwiWord, generateMultipleTwiWords, getCachedWord, cacheWord } from './services/llmService';
 
 function App() {
   const [showWelcome, setShowWelcome] = useState(true);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [showHistory, setShowHistory] = useState(false);
-  const [twiWords, setTwiWords] = useState(staticTwiWords);
+  const [twiWords, setTwiWords] = useState([]);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('sentence');
   const [showCategorySelector, setShowCategorySelector] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
 
-  // Load cached dynamic words on mount
+  // Generate initial batch of words on app load
   useEffect(() => {
-    const loadCachedWords = () => {
-      const cached = JSON.parse(localStorage.getItem('generatedWords') || '{}');
-      Object.values(cached).forEach(word => {
-        addDynamicWord(word);
-      });
-      const filteredWords = getTwiWords(selectedCategory);
-      setTwiWords(filteredWords);
+    const initializeWords = async () => {
+      setIsInitializing(true);
+      try {
+        // Load cached words first
+        const cached = JSON.parse(localStorage.getItem('generatedWords') || '{}');
+        const cachedWords = Object.values(cached);
+        
+        if (cachedWords.length > 0) {
+          addMultipleDynamicWords(cachedWords);
+          const filteredWords = getTwiWords(selectedCategory);
+          setTwiWords(filteredWords);
+        } else {
+          // Generate initial batch of 5 words per category
+          console.log('Generating initial words...');
+          const twoLetterWords = await generateMultipleTwiWords(3, 'twoLetter', 1);
+          const threeLetterWords = await generateMultipleTwiWords(3, 'threeLetter', 100);
+          const sentenceWords = await generateMultipleTwiWords(3, 'sentence', 200);
+          
+          const allNewWords = [...twoLetterWords, ...threeLetterWords, ...sentenceWords];
+          
+          // Cache all generated words
+          allNewWords.forEach(word => cacheWord(word));
+          
+          // Add to state
+          addMultipleDynamicWords(allNewWords);
+          const filteredWords = getTwiWords(selectedCategory);
+          setTwiWords(filteredWords);
+        }
+      } catch (error) {
+        console.error('Error initializing words:', error);
+      } finally {
+        setIsInitializing(false);
+      }
     };
-    loadCachedWords();
-  }, []);
+
+    if (showWelcome === false && twiWords.length === 0) {
+      initializeWords();
+    }
+  }, [showWelcome]);
 
   // Filter words when category changes
   useEffect(() => {
@@ -38,12 +68,12 @@ function App() {
 
   // Get today's word based on the day of year (so it's "daily")
   useEffect(() => {
-    if (!showWelcome && twiWords.length > 0) {
+    if (!showWelcome && twiWords.length > 0 && !isInitializing) {
       const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
       const dailyWordIndex = dayOfYear % twiWords.length;
       setCurrentWordIndex(dailyWordIndex);
     }
-  }, [showWelcome, twiWords]);
+  }, [showWelcome, twiWords, isInitializing]);
 
   const handlePlayAudio = (word) => {
     if (word.audioFile) {
@@ -152,6 +182,20 @@ function App() {
     );
   }
 
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-pink-50 via-orange-50 to-yellow-50">
+        <div className="text-center">
+          <div className="inline-block">
+            <div className="w-16 h-16 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin mb-4"></div>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Generating Your Words</h2>
+          <p className="text-gray-600">Creating AI-powered Twi words just for you...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen pb-32">
       {/* Header */}
@@ -189,7 +233,7 @@ function App() {
           />
         ) : (
           <div className="text-center py-12">
-            <p className="text-gray-500">Loading words...</p>
+            <p className="text-gray-500">No words in this category. Generate some!</p>
           </div>
         )}
       </main>

@@ -1,139 +1,7 @@
-// Static Twi words database - combined with AI-generated words
-// Core vocabulary that's always available
-export const staticTwiWords = [
-  {
-    id: 1,
-    word: "Akwaaba",
-    pronunciation: "ah-kwah-bah",
-    definition: "Welcome",
-    example: {
-      twi: "Akwaaba fi kwan so",
-      english: "Welcome from your journey"
-    },
-    audioFile: null,
-    isStatic: true,
-    category: "sentence"
-  },
-  {
-    id: 2,
-    word: "Medaase",
-    pronunciation: "meh-dah-seh",
-    definition: "Thank you",
-    example: {
-      twi: "Medaase paa!",
-      english: "Thank you very much!"
-    },
-    audioFile: null,
-    isStatic: true,
-    category: "sentence"
-  },
-  {
-    id: 3,
-    word: "Ɔdɔ",
-    pronunciation: "aw-daw",
-    definition: "Love",
-    example: {
-      twi: "Me dɔ wo",
-      english: "I love you"
-    },
-    audioFile: null,
-    isStatic: true,
-    category: "threeLetter"
-  },
-  {
-    id: 4,
-    word: "Ɛte sɛn",
-    pronunciation: "eh-teh-sen",
-    definition: "How are you?",
-    example: {
-      twi: "Maakye, ɛte sɛn?",
-      english: "Good morning, how are you?"
-    },
-    audioFile: null,
-    isStatic: true,
-    category: "sentence"
-  },
-  {
-    id: 5,
-    word: "Me ho yɛ",
-    pronunciation: "meh-ho-yeh",
-    definition: "I am fine",
-    example: {
-      twi: "Me ho yɛ, medaase",
-      english: "I am fine, thank you"
-    },
-    audioFile: null,
-    isStatic: true,
-    category: "sentence"
-  },
-  {
-    id: 6,
-    word: "Adesua",
-    pronunciation: "ah-deh-soo-ah",
-    definition: "Learning/Education",
-    example: {
-      twi: "Adesua yɛ adeɛ pa",
-      english: "Education is a good thing"
-    },
-    audioFile: null,
-    isStatic: true,
-    category: "sentence"
-  },
-  {
-    id: 7,
-    word: "Ayekoo",
-    pronunciation: "ah-yeh-koh",
-    definition: "Well done! (congratulations)",
-    example: {
-      twi: "Ayekoo wɔ w'adwuma ho",
-      english: "Well done on your work"
-    },
-    audioFile: null,
-    isStatic: true,
-    category: "sentence"
-  },
-  {
-    id: 8,
-    word: "Baabi",
-    pronunciation: "bah-bee",
-    definition: "Place",
-    example: {
-      twi: "Baabi a me din de",
-      english: "The place where my name is"
-    },
-    audioFile: null,
-    isStatic: true,
-    category: "threeLetter"
-  },
-  {
-    id: 9,
-    word: "Ɔkwan",
-    pronunciation: "aw-kwan",
-    definition: "Way/Road",
-    example: {
-      twi: "Kɔ ɔkwan no so",
-      english: "Go on the way/road"
-    },
-    audioFile: null,
-    isStatic: true,
-    category: "threeLetter"
-  },
-  {
-    id: 10,
-    word: "Yɛ dɔ",
-    pronunciation: "yeh-daw",
-    definition: "We love",
-    example: {
-      twi: "Yɛ dɔ ɔkwan no",
-      english: "We love this way"
-    },
-    audioFile: null,
-    isStatic: true,
-    category: "threeLetter"
-  }
-];
+// Fully AI-Generated Twi words database
+// All words are generated dynamically from LLM
 
-// Dynamic words will be loaded from LLM or localStorage
+// Initially empty - words are generated on demand
 export let dynamicTwiWords = [];
 
 // Category definitions
@@ -143,27 +11,40 @@ export const WORD_CATEGORIES = {
   sentence: { label: "Sentences", emoji: "📖", description: "Full phrases and sentences" }
 };
 
-// Combined getter - returns static + dynamic words, optionally filtered by category
+// Get all words or filter by category
 export const getTwiWords = (categoryFilter = null) => {
-  const allWords = [...staticTwiWords, ...dynamicTwiWords];
   if (categoryFilter && categoryFilter !== 'all') {
-    return allWords.filter(word => word.category === categoryFilter);
+    return dynamicTwiWords.filter(word => word.category === categoryFilter);
   }
-  return allWords;
+  return dynamicTwiWords;
 };
 
 // Add a dynamic word to the collection
 export const addDynamicWord = (word) => {
-  dynamicTwiWords.push(word);
+  // Avoid duplicates
+  if (!dynamicTwiWords.find(w => w.id === word.id)) {
+    dynamicTwiWords.push(word);
+  }
 };
 
-// Clear dynamic words
+// Add multiple words at once
+export const addMultipleDynamicWords = (words) => {
+  words.forEach(word => addDynamicWord(word));
+};
+
+// Clear all dynamic words
 export const clearDynamicWords = () => {
   dynamicTwiWords = [];
 };
 
+// Get word count for a specific category
+export const getWordCountByCategory = (category) => {
+  return getTwiWords(category).length;
+};
+
 // For backward compatibility
-export const twiWords = staticTwiWords;
+export const staticTwiWords = [];
+export const twiWords = dynamicTwiWords;
 
 // Goofy/romantic messages that show with the photo
 export const goofyMessages = [
