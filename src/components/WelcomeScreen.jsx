@@ -25,26 +25,11 @@ const WelcomeScreen = ({ onContinue }) => {
       {/* Photo Container */}
       <div className="mb-8 relative">
         <div className="w-72 h-72 md:w-96 md:h-96 rounded-3xl overflow-hidden shadow-2xl border-8 border-white transform hover:scale-105 transition-transform duration-300">
-          {/* Placeholder for your photo - Replace this with your actual image */}
-          <div className="w-full h-full bg-gradient-to-br from-pink-200 to-orange-200 flex items-center justify-center">
-            <div className="text-center p-8">
-              <p className="text-4xl mb-4">📸</p>
-              <p className="text-gray-600 text-sm">
-                Replace this with your photo!<br/>
-                Save it as: <br/>
-                <code className="bg-white px-2 py-1 rounded text-xs">
-                  /public/couple-photo.jpg
-                </code>
-              </p>
-            </div>
-          </div>
-          {/* When you add your photo, uncomment this and comment out the div above:
           <img
-            src="/couple-photo.jpg"
+            src="/couple-photo.jpeg"
             alt="Us with our pets"
             className="w-full h-full object-cover"
           />
-          */}
         </div>
 
         {/* Decorative hearts */}
