@@ -1,5 +1,6 @@
-// Sample Twi words database - you can expand this!
-export const twiWords = [
+// Static Twi words database - combined with AI-generated words
+// Core vocabulary that's always available
+export const staticTwiWords = [
   {
     id: 1,
     word: "Akwaaba",
@@ -9,7 +10,8 @@ export const twiWords = [
       twi: "Akwaaba fi kwan so",
       english: "Welcome from your journey"
     },
-    audioFile: null // Will use TTS or custom audio
+    audioFile: null,
+    isStatic: true
   },
   {
     id: 2,
@@ -20,7 +22,8 @@ export const twiWords = [
       twi: "Medaase paa!",
       english: "Thank you very much!"
     },
-    audioFile: null
+    audioFile: null,
+    isStatic: true
   },
   {
     id: 3,
@@ -31,7 +34,8 @@ export const twiWords = [
       twi: "Me dɔ wo",
       english: "I love you"
     },
-    audioFile: null
+    audioFile: null,
+    isStatic: true
   },
   {
     id: 4,
@@ -42,7 +46,8 @@ export const twiWords = [
       twi: "Maakye, ɛte sɛn?",
       english: "Good morning, how are you?"
     },
-    audioFile: null
+    audioFile: null,
+    isStatic: true
   },
   {
     id: 5,
@@ -53,7 +58,8 @@ export const twiWords = [
       twi: "Me ho yɛ, medaase",
       english: "I am fine, thank you"
     },
-    audioFile: null
+    audioFile: null,
+    isStatic: true
   },
   {
     id: 6,
@@ -64,7 +70,8 @@ export const twiWords = [
       twi: "Adesua yɛ adeɛ pa",
       english: "Education is a good thing"
     },
-    audioFile: null
+    audioFile: null,
+    isStatic: true
   },
   {
     id: 7,
@@ -75,9 +82,67 @@ export const twiWords = [
       twi: "Ayekoo wɔ w'adwuma ho",
       english: "Well done on your work"
     },
-    audioFile: null
+    audioFile: null,
+    isStatic: true
+  },
+  {
+    id: 8,
+    word: "Baabi",
+    pronunciation: "bah-bee",
+    definition: "Place",
+    example: {
+      twi: "Baabi a me din de",
+      english: "The place where my name is"
+    },
+    audioFile: null,
+    isStatic: true
+  },
+  {
+    id: 9,
+    word: "Ɔkwan",
+    pronunciation: "aw-kwan",
+    definition: "Way/Road",
+    example: {
+      twi: "Kɔ ɔkwan no so",
+      english: "Go on the way/road"
+    },
+    audioFile: null,
+    isStatic: true
+  },
+  {
+    id: 10,
+    word: "Yɛ dɔ",
+    pronunciation: "yeh-daw",
+    definition: "We love",
+    example: {
+      twi: "Yɛ dɔ ɔkwan no",
+      english: "We love this way"
+    },
+    audioFile: null,
+    isStatic: true
   }
 ];
+
+// Dynamic words will be loaded from LLM or localStorage
+export let dynamicTwiWords = [];
+
+// Combined getter - returns static + dynamic words
+export const getTwiWords = () => {
+  return [...staticTwiWords, ...dynamicTwiWords];
+};
+
+// Add a dynamic word to the collection
+export const addDynamicWord = (word) => {
+  dynamicTwiWords.push(word);
+};
+
+// Clear dynamic words
+export const clearDynamicWords = () => {
+  dynamicTwiWords = [];
+};
+
+// For backward compatibility
+export const twiWords = staticTwiWords;
 
 // Goofy/romantic messages that show with the photo
 export const goofyMessages = [

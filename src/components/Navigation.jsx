@@ -1,4 +1,4 @@
-const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistory }) => {
+const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistory, onGenerateNew, isLoading }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
       <div className="max-w-2xl mx-auto px-4 py-4">
@@ -16,7 +16,7 @@ const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistor
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-2 mb-3">
           <button
             onClick={onPrevious}
             disabled={currentIndex === 0}
@@ -49,6 +49,16 @@ const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistor
             </svg>
           </button>
         </div>
+
+        {/* Generate New Word Button */}
+        <button
+          onClick={onGenerateNew}
+          disabled={isLoading}
+          className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-400 text-white rounded-full font-medium shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          <span>{isLoading ? 'Generating...' : '✨'}</span>
+          <span>{isLoading ? 'Creating New Word' : 'Generate New Word'}</span>
+        </button>
       </div>
     </div>
   );

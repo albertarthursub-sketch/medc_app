@@ -3,12 +3,27 @@ import WelcomeScreen from './components/WelcomeScreen';
 import WordCard from './components/WordCard';
 import Navigation from './components/Navigation';
 import WordHistory from './components/WordHistory';
-import { twiWords } from './data/twiWords';
+import { staticTwiWords, getTwiWords, addDynamicWord } from './data/twiWords';
+import { generateTwiWord, getCachedWord, cacheWord } from './services/llmService';
 
 function App() {
   const [showWelcome, setShowWelcome] = useState(true);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [showHistory, setShowHistory] = useState(false);
+  const [twiWords, setTwiWords] = useState(staticTwiWords);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // Load cached dynamic words on mount
+  useEffect(() => {
+    const loadCachedWords = () => {
+      const cached = JSON.parse(localStorage.getItem('generatedWords') || '{}');
+      Object.values(cached).forEach(word => {
+        addDynamicWord(word);
+      });
+      setTwiWords(getTwiWords());
+    };
+    loadCachedWords();
+  }, []);
 
   // Get today's word based on the day of year (so it's "daily")
   useEffect(() => {
@@ -17,7 +32,7 @@ function App() {
       const dailyWordIndex = dayOfYear % twiWords.length;
       setCurrentWordIndex(dailyWordIndex);
     }
-  }, [showWelcome]);
+  }, [showWelcome, twiWords]);
 
   const handlePlayAudio = (word) => {
     // Check if there's a custom audio file
@@ -69,6 +84,30 @@ function App() {
     setCurrentWordIndex(index);
   };
 
+  // Generate a new word dynamically
+  const handleGenerateNewWord = async () => {
+    setIsLoadingMore(true);
+    try {
+      const nextId = Math.max(...twiWords.map(w => w.id), 0) + 1;
+      
+      // Check if word is cached
+      let newWord = getCachedWord(nextId);
+      
+      if (!newWord) {
+        // Generate new word from LLM
+        newWord = await generateTwiWord(nextId);
+        cacheWord(newWord);
+      }
+      
+      addDynamicWord(newWord);
+      setTwiWords(getTwiWords());
+    } catch (error) {
+      alert(`Failed to generate word: ${error.message}`);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
+
   if (showWelcome) {
     return <WelcomeScreen onContinue={() => setShowWelcome(false)} />;
   }
@@ -101,10 +140,16 @@ function App() {
 
       {/* Main Content */}
       <main className="pt-8">
-        <WordCard
-          word={twiWords[currentWordIndex]}
-          onPlayAudio={handlePlayAudio}
-        />
+        {twiWords.length > 0 ? (
+          <WordCard
+            word={twiWords[currentWordIndex]}
+            onPlayAudio={handlePlayAudio}
+          />
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-500">Loading words...</p>
+          </div>
+        )}
       </main>
 
       {/* Navigation */}
@@ -114,6 +159,8 @@ function App() {
         onPrevious={handlePrevious}
         onNext={handleNext}
         onShowHistory={() => setShowHistory(true)}
+        onGenerateNew={handleGenerateNewWord}
+        isLoading={isLoadingMore}
       />
 
       {/* Word History Modal */}
