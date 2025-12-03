@@ -11,7 +11,8 @@ export const staticTwiWords = [
       english: "Welcome from your journey"
     },
     audioFile: null,
-    isStatic: true
+    isStatic: true,
+    category: "sentence"
   },
   {
     id: 2,
@@ -23,7 +24,8 @@ export const staticTwiWords = [
       english: "Thank you very much!"
     },
     audioFile: null,
-    isStatic: true
+    isStatic: true,
+    category: "sentence"
   },
   {
     id: 3,
@@ -35,7 +37,8 @@ export const staticTwiWords = [
       english: "I love you"
     },
     audioFile: null,
-    isStatic: true
+    isStatic: true,
+    category: "threeLetter"
   },
   {
     id: 4,
@@ -47,7 +50,8 @@ export const staticTwiWords = [
       english: "Good morning, how are you?"
     },
     audioFile: null,
-    isStatic: true
+    isStatic: true,
+    category: "sentence"
   },
   {
     id: 5,
@@ -59,7 +63,8 @@ export const staticTwiWords = [
       english: "I am fine, thank you"
     },
     audioFile: null,
-    isStatic: true
+    isStatic: true,
+    category: "sentence"
   },
   {
     id: 6,
@@ -71,7 +76,8 @@ export const staticTwiWords = [
       english: "Education is a good thing"
     },
     audioFile: null,
-    isStatic: true
+    isStatic: true,
+    category: "sentence"
   },
   {
     id: 7,
@@ -83,7 +89,8 @@ export const staticTwiWords = [
       english: "Well done on your work"
     },
     audioFile: null,
-    isStatic: true
+    isStatic: true,
+    category: "sentence"
   },
   {
     id: 8,
@@ -95,7 +102,8 @@ export const staticTwiWords = [
       english: "The place where my name is"
     },
     audioFile: null,
-    isStatic: true
+    isStatic: true,
+    category: "threeLetter"
   },
   {
     id: 9,
@@ -107,7 +115,8 @@ export const staticTwiWords = [
       english: "Go on the way/road"
     },
     audioFile: null,
-    isStatic: true
+    isStatic: true,
+    category: "threeLetter"
   },
   {
     id: 10,
@@ -119,16 +128,28 @@ export const staticTwiWords = [
       english: "We love this way"
     },
     audioFile: null,
-    isStatic: true
+    isStatic: true,
+    category: "threeLetter"
   }
 ];
 
 // Dynamic words will be loaded from LLM or localStorage
 export let dynamicTwiWords = [];
 
-// Combined getter - returns static + dynamic words
-export const getTwiWords = () => {
-  return [...staticTwiWords, ...dynamicTwiWords];
+// Category definitions
+export const WORD_CATEGORIES = {
+  twoLetter: { label: "2-Letter Words", emoji: "🔤", description: "Short Twi words (2 letters)" },
+  threeLetter: { label: "3-Letter Words", emoji: "📝", description: "Medium Twi words (3 letters)" },
+  sentence: { label: "Sentences", emoji: "📖", description: "Full phrases and sentences" }
+};
+
+// Combined getter - returns static + dynamic words, optionally filtered by category
+export const getTwiWords = (categoryFilter = null) => {
+  const allWords = [...staticTwiWords, ...dynamicTwiWords];
+  if (categoryFilter && categoryFilter !== 'all') {
+    return allWords.filter(word => word.category === categoryFilter);
+  }
+  return allWords;
 };
 
 // Add a dynamic word to the collection

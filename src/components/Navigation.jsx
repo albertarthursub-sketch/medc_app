@@ -1,4 +1,4 @@
-const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistory, onGenerateNew, isLoading }) => {
+const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistory, onGenerateNew, isLoading, onChangeCategory, currentCategory }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
       <div className="max-w-2xl mx-auto px-4 py-4">
@@ -50,15 +50,25 @@ const Navigation = ({ currentIndex, totalWords, onPrevious, onNext, onShowHistor
           </button>
         </div>
 
-        {/* Generate New Word Button */}
-        <button
-          onClick={onGenerateNew}
-          disabled={isLoading}
-          className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-400 text-white rounded-full font-medium shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-        >
-          <span>{isLoading ? 'Generating...' : '✨'}</span>
-          <span>{isLoading ? 'Creating New Word' : 'Generate New Word'}</span>
-        </button>
+        {/* Second Row of Buttons */}
+        <div className="flex items-center gap-2 mb-3">
+          <button
+            onClick={onChangeCategory}
+            className="flex items-center gap-2 px-6 py-3 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-full font-medium transition-colors duration-200"
+          >
+            <span>🎓</span>
+            Change Level
+          </button>
+
+          <button
+            onClick={onGenerateNew}
+            disabled={isLoading}
+            className="flex-1 py-3 bg-gradient-to-r from-purple-500 to-pink-400 text-white rounded-full font-medium shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            <span>{isLoading ? 'Generating...' : '✨'}</span>
+            <span>{isLoading ? 'Creating New Word' : 'Generate New Word'}</span>
+          </button>
+        </div>
       </div>
     </div>
   );

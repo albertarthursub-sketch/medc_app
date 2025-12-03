@@ -3,7 +3,8 @@ import WelcomeScreen from './components/WelcomeScreen';
 import WordCard from './components/WordCard';
 import Navigation from './components/Navigation';
 import WordHistory from './components/WordHistory';
-import { staticTwiWords, getTwiWords, addDynamicWord } from './data/twiWords';
+import CategorySelector from './components/CategorySelector';
+import { staticTwiWords, getTwiWords, addDynamicWord, WORD_CATEGORIES } from './data/twiWords';
 import { generateTwiWord, getCachedWord, cacheWord } from './services/llmService';
 
 function App() {
@@ -12,6 +13,8 @@ function App() {
   const [showHistory, setShowHistory] = useState(false);
   const [twiWords, setTwiWords] = useState(staticTwiWords);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('sentence');
+  const [showCategorySelector, setShowCategorySelector] = useState(false);
 
   // Load cached dynamic words on mount
   useEffect(() => {
@@ -20,14 +23,22 @@ function App() {
       Object.values(cached).forEach(word => {
         addDynamicWord(word);
       });
-      setTwiWords(getTwiWords());
+      const filteredWords = getTwiWords(selectedCategory);
+      setTwiWords(filteredWords);
     };
     loadCachedWords();
   }, []);
 
+  // Filter words when category changes
+  useEffect(() => {
+    const filteredWords = getTwiWords(selectedCategory);
+    setTwiWords(filteredWords);
+    setCurrentWordIndex(0);
+  }, [selectedCategory]);
+
   // Get today's word based on the day of year (so it's "daily")
   useEffect(() => {
-    if (!showWelcome) {
+    if (!showWelcome && twiWords.length > 0) {
       const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
       const dailyWordIndex = dayOfYear % twiWords.length;
       setCurrentWordIndex(dailyWordIndex);
@@ -35,32 +46,23 @@ function App() {
   }, [showWelcome, twiWords]);
 
   const handlePlayAudio = (word) => {
-    // Check if there's a custom audio file
     if (word.audioFile) {
       const audio = new Audio(word.audioFile);
       audio.play().catch(err => console.error('Audio playback failed:', err));
     } else {
-      // Use Web Speech API for text-to-speech
       if ('speechSynthesis' in window) {
-        // Cancel any ongoing speech
         window.speechSynthesis.cancel();
-
         const utterance = new SpeechSynthesisUtterance(word.word);
-
-        // Try to find a suitable voice (prefer female voice or any available voice)
         const voices = window.speechSynthesis.getVoices();
         const preferredVoice = voices.find(voice =>
           voice.lang.startsWith('en') || voice.lang.startsWith('af')
         );
-
         if (preferredVoice) {
           utterance.voice = preferredVoice;
         }
-
-        utterance.rate = 0.8; // Slower for learning
+        utterance.rate = 0.8;
         utterance.pitch = 1.0;
         utterance.volume = 1.0;
-
         window.speechSynthesis.speak(utterance);
       } else {
         alert('Sorry, your browser doesn\'t support audio playback. Try a different browser!');
@@ -84,23 +86,22 @@ function App() {
     setCurrentWordIndex(index);
   };
 
-  // Generate a new word dynamically
   const handleGenerateNewWord = async () => {
     setIsLoadingMore(true);
     try {
-      const nextId = Math.max(...twiWords.map(w => w.id), 0) + 1;
+      const allWords = getTwiWords('all');
+      const nextId = Math.max(...allWords.map(w => w.id), 0) + 1;
       
-      // Check if word is cached
       let newWord = getCachedWord(nextId);
       
       if (!newWord) {
-        // Generate new word from LLM
-        newWord = await generateTwiWord(nextId);
+        newWord = await generateTwiWord(nextId, selectedCategory);
         cacheWord(newWord);
       }
       
       addDynamicWord(newWord);
-      setTwiWords(getTwiWords());
+      const filteredWords = getTwiWords(selectedCategory);
+      setTwiWords(filteredWords);
     } catch (error) {
       alert(`Failed to generate word: ${error.message}`);
     } finally {
@@ -110,6 +111,45 @@ function App() {
 
   if (showWelcome) {
     return <WelcomeScreen onContinue={() => setShowWelcome(false)} />;
+  }
+
+  if (showCategorySelector) {
+    return (
+      <div className="min-h-screen pb-32">
+        <header className="bg-white shadow-md sticky top-0 z-10">
+          <div className="max-w-2xl mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">❤️</span>
+                <div>
+                  <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-orange-400">
+                    Twi Learning
+                  </h1>
+                  <p className="text-xs text-gray-500">Made with love</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowWelcome(true)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+                title="Back to welcome"
+              >
+                <span className="text-2xl">🏠</span>
+              </button>
+            </div>
+          </div>
+        </header>
+        
+        <main className="pt-8">
+          <CategorySelector 
+            selectedCategory={selectedCategory} 
+            onSelectCategory={(category) => {
+              setSelectedCategory(category);
+              setShowCategorySelector(false);
+            }}
+          />
+        </main>
+      </div>
+    );
   }
 
   return (
@@ -124,7 +164,9 @@ function App() {
                 <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-orange-400">
                   Twi Learning
                 </h1>
-                <p className="text-xs text-gray-500">Made with love</p>
+                <p className="text-xs text-gray-500">
+                  {WORD_CATEGORIES[selectedCategory].label}
+                </p>
               </div>
             </div>
             <button
@@ -161,6 +203,8 @@ function App() {
         onShowHistory={() => setShowHistory(true)}
         onGenerateNew={handleGenerateNewWord}
         isLoading={isLoadingMore}
+        onChangeCategory={() => setShowCategorySelector(true)}
+        currentCategory={selectedCategory}
       />
 
       {/* Word History Modal */}

@@ -9,19 +9,44 @@ const API_KEYS = {
 
 const LLM_PROVIDER = import.meta.env.VITE_LLM_PROVIDER || 'openai';
 
-// Prompt for generating Twi words
-const GENERATION_PROMPT = `Generate a random Akan Twi word with the following JSON structure. Return ONLY valid JSON, no other text:
+// Prompts for different categories
+const GENERATION_PROMPTS = {
+  twoLetter: `Generate a random 2-letter Akan Twi word. Return ONLY valid JSON:
 {
-  "word": "Twi word here",
+  "word": "Two letter Twi word here",
   "pronunciation": "phonetic pronunciation",
   "definition": "English meaning",
   "example": {
-    "twi": "Example sentence in Twi",
+    "twi": "Example sentence in Twi using this word",
+    "english": "English translation"
+  },
+  "category": "twoLetter"
+}`,
+  
+  threeLetter: `Generate a random 3-letter Akan Twi word. Return ONLY valid JSON:
+{
+  "word": "Three letter Twi word here",
+  "pronunciation": "phonetic pronunciation",
+  "definition": "English meaning",
+  "example": {
+    "twi": "Example sentence in Twi using this word",
+    "english": "English translation"
+  },
+  "category": "threeLetter"
+}`,
+  
+  sentence: `Generate a random Akan Twi phrase or short sentence (3+ words). Return ONLY valid JSON:
+{
+  "word": "Twi phrase/sentence here",
+  "pronunciation": "phonetic pronunciation of the phrase",
+  "definition": "English meaning",
+  "example": {
+    "twi": "A longer example using this phrase in context",
     "english": "English translation of the example"
-  }
-}
-
-Important: The word should be commonly used in Akan language. Make sure pronunciation is easy to understand.`;
+  },
+  "category": "sentence"
+}`
+};
 
 // Call OpenAI API
 const callOpenAI = async (prompt) => {
@@ -116,7 +141,7 @@ const callGoogle = async (prompt) => {
 };
 
 // Main function to generate a Twi word
-export const generateTwiWord = async (id) => {
+export const generateTwiWord = async (id, category = 'sentence') => {
   try {
     if (!API_KEYS[LLM_PROVIDER]) {
       throw new Error(
@@ -124,17 +149,19 @@ export const generateTwiWord = async (id) => {
       );
     }
 
+    const prompt = GENERATION_PROMPTS[category] || GENERATION_PROMPTS.sentence;
+
     let content;
     switch (LLM_PROVIDER) {
       case 'anthropic':
-        content = await callAnthropic(GENERATION_PROMPT);
+        content = await callAnthropic(prompt);
         break;
       case 'google':
-        content = await callGoogle(GENERATION_PROMPT);
+        content = await callGoogle(prompt);
         break;
       case 'openai':
       default:
-        content = await callOpenAI(GENERATION_PROMPT);
+        content = await callOpenAI(prompt);
     }
 
     // Extract JSON from response (in case there's extra text)
@@ -148,6 +175,7 @@ export const generateTwiWord = async (id) => {
     return {
       id,
       ...wordData,
+      category: category,
       audioFile: null,
       generatedAt: new Date().toISOString(),
     };
@@ -158,11 +186,11 @@ export const generateTwiWord = async (id) => {
 };
 
 // Generate multiple words at once
-export const generateMultipleTwiWords = async (count, startId = 1) => {
+export const generateMultipleTwiWords = async (count, category = 'sentence', startId = 1) => {
   const words = [];
   for (let i = 0; i < count; i++) {
     try {
-      const word = await generateTwiWord(startId + i);
+      const word = await generateTwiWord(startId + i, category);
       words.push(word);
       // Add delay to avoid rate limiting
       await new Promise(resolve => setTimeout(resolve, 500));
