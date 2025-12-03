@@ -1,5 +1,8 @@
 // LLM Service for generating Twi words dynamically
+// Uses verified dictionary first, then OpenAI for variations
 // Supports OpenAI, Anthropic Claude, and Google Gemini
+
+import { VERIFIED_TWI_DICTIONARY, getRandomWords } from '../data/verifiedTwiDictionary';
 
 const API_KEYS = {
   openai: import.meta.env.VITE_OPENAI_API_KEY,
@@ -134,16 +137,32 @@ const callGoogle = async (prompt) => {
   return data.candidates[0].content.parts[0].text;
 };
 
-// Main function to generate a Twi word
-export const generateTwiWord = async (id, category = 'sentence') => {
+// Main function to generate a Twi word - uses verified dictionary first
+export const generateTwiWord = async (id, category = 'intermediate') => {
   try {
+    // PRIORITY 1: Use verified dictionary (100% accurate)
+    const verifiedWords = VERIFIED_TWI_DICTIONARY[category] || VERIFIED_TWI_DICTIONARY.intermediate;
+    
+    if (verifiedWords && verifiedWords.length > 0) {
+      const randomWord = verifiedWords[Math.floor(Math.random() * verifiedWords.length)];
+      return {
+        id,
+        ...randomWord,
+        category: category,
+        audioFile: null,
+        generatedAt: new Date().toISOString(),
+        source: 'verified_dictionary'
+      };
+    }
+
+    // FALLBACK: If no verified words, try OpenAI (for advanced use cases)
     if (!API_KEYS[LLM_PROVIDER]) {
       throw new Error(
         `No API key configured for ${LLM_PROVIDER}. Please add your key to .env file.`
       );
     }
 
-    const prompt = GENERATION_PROMPTS[category] || GENERATION_PROMPTS.sentence;
+    const prompt = GENERATION_PROMPTS[category] || GENERATION_PROMPTS.intermediate;
 
     let content;
     switch (LLM_PROVIDER) {
@@ -172,6 +191,7 @@ export const generateTwiWord = async (id, category = 'sentence') => {
       category: category,
       audioFile: null,
       generatedAt: new Date().toISOString(),
+      source: 'llm_generated'
     };
   } catch (error) {
     console.error('Error generating Twi word:', error);
@@ -179,9 +199,27 @@ export const generateTwiWord = async (id, category = 'sentence') => {
   }
 };
 
-// Generate multiple words at once
-export const generateMultipleTwiWords = async (count, category = 'sentence', startId = 1) => {
+// Generate multiple words at once - uses verified dictionary
+export const generateMultipleTwiWords = async (count, category = 'intermediate', startId = 1) => {
   const words = [];
+  const verifiedWords = VERIFIED_TWI_DICTIONARY[category] || [];
+  
+  // If we have verified words, use them directly (much faster and accurate)
+  if (verifiedWords.length > 0) {
+    const shuffled = [...verifiedWords].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, Math.min(count, verifiedWords.length));
+    
+    return selected.map((word, index) => ({
+      id: startId + index,
+      ...word,
+      category: category,
+      audioFile: null,
+      generatedAt: new Date().toISOString(),
+      source: 'verified_dictionary'
+    }));
+  }
+
+  // Fallback to LLM if needed
   for (let i = 0; i < count; i++) {
     try {
       const word = await generateTwiWord(startId + i, category);
