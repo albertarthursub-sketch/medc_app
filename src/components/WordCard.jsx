@@ -1,6 +1,20 @@
 import { useState } from 'react';
+import { playWord } from '../services/pronunciationService';
 
 const WordCard = ({ word, onPlayAudio }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handlePlayPronunciation = async () => {
+    setIsPlaying(true);
+    try {
+      await playWord(word.word, word.pronunciation);
+    } catch (error) {
+      console.error('Error playing pronunciation:', error);
+    } finally {
+      setIsPlaying(false);
+    }
+  };
+
   return (
     <div className="w-full max-w-2xl mx-auto px-4 py-6">
       {/* Main Word Card */}
@@ -24,17 +38,18 @@ const WordCard = ({ word, onPlayAudio }) => {
         {/* Play Audio Button */}
         <div className="flex justify-center mb-6">
           <button
-            onClick={() => onPlayAudio(word)}
-            className="group flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 transition-all duration-200"
+            onClick={handlePlayPronunciation}
+            disabled={isPlaying}
+            className="group flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg
-              className="w-6 h-6 group-hover:animate-pulse"
+              className={`w-6 h-6 ${isPlaying ? 'animate-pulse' : 'group-hover:animate-pulse'}`}
               fill="currentColor"
               viewBox="0 0 24 24"
             >
               <path d="M8 5v14l11-7z" />
             </svg>
-            <span className="font-semibold">Hear it!</span>
+            <span className="font-semibold">{isPlaying ? 'Playing...' : 'Hear it!'}</span>
           </button>
         </div>
 

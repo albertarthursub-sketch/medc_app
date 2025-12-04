@@ -78,28 +78,8 @@ function App() {
   }, [showWelcome, twiWords, isInitializing]);
 
   const handlePlayAudio = (word) => {
-    if (word.audioFile) {
-      const audio = new Audio(word.audioFile);
-      audio.play().catch(err => console.error('Audio playback failed:', err));
-    } else {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(word.word);
-        const voices = window.speechSynthesis.getVoices();
-        const preferredVoice = voices.find(voice =>
-          voice.lang.startsWith('en') || voice.lang.startsWith('af')
-        );
-        if (preferredVoice) {
-          utterance.voice = preferredVoice;
-        }
-        utterance.rate = 0.8;
-        utterance.pitch = 1.0;
-        utterance.volume = 1.0;
-        window.speechSynthesis.speak(utterance);
-      } else {
-        alert('Sorry, your browser doesn\'t support audio playback. Try a different browser!');
-      }
-    }
+    // Deprecated - now using pronunciationService
+    console.warn('Old audio handler called - using pronunciationService instead');
   };
 
   const handlePrevious = () => {
