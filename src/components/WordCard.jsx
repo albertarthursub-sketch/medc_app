@@ -43,6 +43,14 @@ const WordCard = ({ word, onPlayAudio }) => {
           <p className="text-gray-600 text-sm uppercase tracking-wider mb-2">English Meaning</p>
           <p className="text-3xl md:text-4xl font-bold text-gray-800">{word.definition}</p>
         </div>
+
+        {/* Example Sentence */}
+        {word.example && (
+          <div className="mt-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6">
+            <p className="text-gray-600 text-sm uppercase tracking-wider mb-2">Example in Twi</p>
+            <p className="text-xl text-gray-800 italic">{word.example}</p>
+          </div>
+        )}
       </div>
     </div>
   );

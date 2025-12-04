@@ -3,6 +3,7 @@
 // Supports OpenAI, Anthropic Claude, and Google Gemini
 
 import { VERIFIED_TWI_DICTIONARY, getRandomWords } from '../data/verifiedTwiDictionary';
+import { generateExampleSentence } from './geminiEnhancementService';
 
 // Track which words have been used in current session
 const usedWordIds = new Set();
@@ -161,10 +162,22 @@ export const generateTwiWord = async (id, category = 'intermediate') => {
       const wordIndex = verifiedWords.indexOf(randomWord);
       usedWordIds.add(`${category}-${wordIndex}`);
       
+      // Try to generate an example if not present
+      let example = randomWord.example || null;
+      if (!example) {
+        try {
+          const enriched = await generateExampleSentence(randomWord);
+          example = enriched.example;
+        } catch (err) {
+          console.warn(`Could not generate example for ${randomWord.word}:`, err);
+        }
+      }
+      
       return {
         id,
         ...randomWord,
         category: category,
+        example: example,
         audioFile: null,
         generatedAt: new Date().toISOString(),
         source: 'verified_dictionary'
@@ -239,14 +252,35 @@ export const generateMultipleTwiWords = async (count, category = 'intermediate',
       usedWordIds.add(`${category}-${idx}`);
     });
     
-    return selected.map((word, index) => ({
-      id: startId + index,
-      ...word,
-      category: category,
-      audioFile: null,
-      generatedAt: new Date().toISOString(),
-      source: 'verified_dictionary'
-    }));
+    // Enrich with examples where missing
+    const enrichedWords = [];
+    for (const word of selected) {
+      let example = word.example || null;
+      
+      // Try to generate example if not present
+      if (!example) {
+        try {
+          const enriched = await generateExampleSentence(word);
+          example = enriched.example;
+          // Small delay to avoid rate limiting
+          await new Promise(resolve => setTimeout(resolve, 200));
+        } catch (err) {
+          console.warn(`Could not generate example for ${word.word}:`, err);
+        }
+      }
+      
+      enrichedWords.push({
+        id: startId + enrichedWords.length,
+        ...word,
+        category: category,
+        example: example,
+        audioFile: null,
+        generatedAt: new Date().toISOString(),
+        source: 'verified_dictionary'
+      });
+    }
+    
+    return enrichedWords;
   }
 
   // Fallback to LLM if needed
