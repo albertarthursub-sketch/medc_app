@@ -9,7 +9,7 @@ import RewardScreen from './components/RewardScreen';
 import JollofQuiz from './components/JollofQuiz';
 import WordSearch from './components/WordSearch';
 import { getTwiWords, addDynamicWord, addMultipleDynamicWords, WORD_CATEGORIES } from './data/twiWords';
-import { generateTwiWord, generateMultipleTwiWords, getCachedWord, cacheWord } from './services/llmService';
+import { generateTwiWord, generateMultipleTwiWords, getCachedWord, cacheWord, clearCache } from './services/llmService';
 
 function App() {
   const [showWelcome, setShowWelcome] = useState(true);
@@ -31,31 +31,24 @@ function App() {
     const initializeWords = async () => {
       setIsInitializing(true);
       try {
-        // Load cached words first
-        const cached = JSON.parse(localStorage.getItem('generatedWords') || '{}');
-        const cachedWords = Object.values(cached);
+        // IMPORTANT: Clear old incorrect cached words from LLM (if they exist)
+        clearCache();
         
-        if (cachedWords.length > 0) {
-          addMultipleDynamicWords(cachedWords);
-          const filteredWords = getTwiWords(selectedCategory);
-          setTwiWords(filteredWords);
-        } else {
-          // Generate initial batch of 3 words per category
-          console.log('Generating initial words...');
-          const easyWords = await generateMultipleTwiWords(3, 'easy', 1);
-          const intermediateWords = await generateMultipleTwiWords(3, 'intermediate', 100);
-          const difficultWords = await generateMultipleTwiWords(3, 'difficult', 200);
-          
-          const allNewWords = [...easyWords, ...intermediateWords, ...difficultWords];
-          
-          // Cache all generated words
-          allNewWords.forEach(word => cacheWord(word));
-          
-          // Add to state
-          addMultipleDynamicWords(allNewWords);
-          const filteredWords = getTwiWords(selectedCategory);
-          setTwiWords(filteredWords);
-        }
+        // Generate initial batch of 3 words per category from VERIFIED DICTIONARY
+        console.log('Generating words from verified Twi dictionary...');
+        const easyWords = await generateMultipleTwiWords(3, 'easy', 1);
+        const intermediateWords = await generateMultipleTwiWords(3, 'intermediate', 100);
+        const difficultWords = await generateMultipleTwiWords(3, 'difficult', 200);
+        
+        const allNewWords = [...easyWords, ...intermediateWords, ...difficultWords];
+        
+        // Cache all generated words
+        allNewWords.forEach(word => cacheWord(word));
+        
+        // Add to state
+        addMultipleDynamicWords(allNewWords);
+        const filteredWords = getTwiWords(selectedCategory);
+        setTwiWords(filteredWords);
       } catch (error) {
         console.error('Error initializing words:', error);
       } finally {
