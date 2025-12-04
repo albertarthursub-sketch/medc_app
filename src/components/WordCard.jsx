@@ -7,8 +7,9 @@ const WordCard = ({ word, onPlayAudio }) => {
   const handlePlayPronunciation = async () => {
     setIsPlaying(true);
     try {
-      console.log('Button clicked for word:', word.word);
-      await playTwiWord(word.word);
+      console.log('🎵 Button clicked for word:', word.word);
+      const result = await playTwiWord(word.word);
+      console.log('🎵 Play result:', result);
     } catch (error) {
       console.error('Error playing pronunciation:', error);
     } finally {
