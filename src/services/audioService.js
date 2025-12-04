@@ -1,173 +1,141 @@
 // Audio Service
-// Provides professional Twi pronunciation using multiple TTS providers
-// Falls back gracefully between providers
+// Provides Twi pronunciation using Web Speech API (native browser TTS)
+// No external API dependencies - works completely offline
 
-// Generate speech using Responsively API (free, reliable)
-export const generateTwiAudio = async (twiWord) => {
-  try {
-    // Use ResponsiveVoice or similar public TTS
-    // For now, we'll construct a data URL using Web Audio API
-    
-    // First, try using a direct approach with better URLs
-    const encodedWord = encodeURIComponent(twiWord);
-    
-    // Try multiple providers in order
-    const providers = [
-      // Option 1: Google TTS (backup endpoint)
-      `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedWord}&tl=twi&client=gtx&ttsspeed=1`,
-      
-      // Option 2: Direct TTS with slower speed
-      `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedWord}&tl=twi`,
-    ];
-    
-    // Return the first provider as primary
-    console.log('Generated audio URL for:', twiWord);
-    return providers[0];
-  } catch (error) {
-    console.error('Error generating audio:', error);
-    return null;
-  }
+// Check if browser supports Web Speech API
+const supportsWebSpeechAPI = () => {
+  const SpeechSynthesisUtterance = window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance;
+  const speechSynthesis = window.speechSynthesis || window.webkitSpeechSynthesis;
+  return !!(SpeechSynthesisUtterance && speechSynthesis);
 };
 
-// Play audio from URL with retry logic
-export const playAudio = (audioUrl) => {
+// Get best available voice for Twi
+const getOptimalVoice = () => {
+  if (!supportsWebSpeechAPI()) return null;
+  
+  const voices = window.speechSynthesis?.getVoices?.() || [];
+  
+  // Preference order for Twi pronunciation:
+  // 1. African locale voices (close to West African)
+  // 2. Male voices (often clearer for African languages)
+  // 3. Default voice as fallback
+  
+  const preferredVoices = [
+    // African locales
+    ...voices.filter(v => v.lang.includes('ak')), // Akan (closest to Twi)
+    ...voices.filter(v => v.lang.includes('zu')), // Zulu (African)
+    ...voices.filter(v => v.lang.includes('xh')), // Xhosa (African)
+    ...voices.filter(v => v.lang.includes('fr-FR')), // French (West African compatibility)
+    ...voices.filter(v => v.lang.includes('en-GB')), // British English (clear pronunciation)
+    ...voices.filter(v => v.lang.includes('en-US')), // US English
+  ];
+  
+  return preferredVoices.length > 0 ? preferredVoices[0] : (voices.length > 0 ? voices[0] : null);
+};
+
+// Play Twi word using Web Speech API
+const playTwiWithWebSpeech = (twiWord) => {
   return new Promise((resolve) => {
     try {
-      if (!audioUrl) {
-        console.warn('No audio URL provided');
+      if (!supportsWebSpeechAPI()) {
+        console.warn('❌ Web Speech API not supported in this browser');
         resolve(false);
         return;
       }
       
-      // Create audio element
-      const audio = new Audio();
-      audio.volume = 1.0;
+      // Cancel any ongoing speech
+      window.speechSynthesis?.cancel?.();
       
-      // Set source
-      audio.src = audioUrl;
+      const utterance = new (window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance)(twiWord);
+      
+      // Optimize for Twi pronunciation
+      utterance.rate = 0.8; // Slower for clarity
+      utterance.pitch = 1.0; // Natural pitch
+      utterance.volume = 1.0; // Max volume
+      
+      // Try to use optimal voice
+      const voice = getOptimalVoice();
+      if (voice) {
+        utterance.voice = voice;
+        console.log(`🎤 Using voice: ${voice.name}`);
+      }
       
       // Event handlers
-      audio.onplay = () => {
-        console.log('Audio playback started');
+      utterance.onstart = () => {
+        console.log('🔊 Speech started');
       };
       
-      audio.onerror = (error) => {
-        console.error('Audio error:', error);
-        resolve(false);
-      };
-      
-      audio.onended = () => {
-        console.log('Audio playback ended');
+      utterance.onend = () => {
+        console.log('✅ Speech ended successfully');
         resolve(true);
       };
       
-      // Try to play
-      const playPromise = audio.play();
+      utterance.onerror = (error) => {
+        console.error('❌ Speech error:', error.error);
+        resolve(false);
+      };
       
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            console.log('Audio playing successfully');
-            // Don't resolve yet - wait for onended
-          })
-          .catch(error => {
-            console.error('Play error:', error);
-            resolve(false);
-          });
-      }
-      
-      // Timeout after 5 seconds if no response
-      setTimeout(() => {
-        if (audio.paused || audio.currentTime === 0) {
-          console.warn('Audio playback timeout');
-          resolve(false);
-        }
-      }, 5000);
+      // Speak the word
+      window.speechSynthesis?.speak?.(utterance);
       
     } catch (error) {
-      console.error('Error playing audio:', error);
+      console.error('❌ Error with Web Speech API:', error);
       resolve(false);
     }
   });
 };
 
-// Cache audio URLs locally
-export const cacheAudioUrl = (twiWord, audioUrl) => {
+// Cache audio preference (not URLs anymore, just metadata)
+export const cacheAudioPreference = (twiWord, success) => {
   try {
-    const cache = JSON.parse(localStorage.getItem('audioCache') || '{}');
+    const cache = JSON.parse(localStorage.getItem('audioPreference') || '{}');
     cache[twiWord] = {
-      url: audioUrl,
-      timestamp: Date.now(),
+      lastAttempt: Date.now(),
+      success: success,
     };
-    localStorage.setItem('audioCache', JSON.stringify(cache));
+    localStorage.setItem('audioPreference', JSON.stringify(cache));
   } catch (error) {
-    console.error('Error caching audio:', error);
-  }
-};
-
-// Get cached audio URL
-export const getCachedAudioUrl = (twiWord) => {
-  try {
-    const cache = JSON.parse(localStorage.getItem('audioCache') || '{}');
-    const cached = cache[twiWord];
-    
-    if (cached) {
-      return cached.url;
-    }
-    
-    return null;
-  } catch (error) {
-    console.error('Error getting cached audio:', error);
-    return null;
+    console.error('Error caching audio preference:', error);
   }
 };
 
 // Clear audio cache
 export const clearAudioCache = () => {
+  localStorage.removeItem('audioPreference');
   localStorage.removeItem('audioCache');
 };
 
-// Main function: Get or generate audio and play
+// Main function: Play Twi word using Web Speech API
 export const playTwiWord = async (twiWord) => {
   try {
     console.log('🔊 Playing Twi word:', twiWord);
     
-    // Check cache first
-    let audioUrl = getCachedAudioUrl(twiWord);
-    
-    if (!audioUrl) {
-      console.log('📡 Generating new audio...');
-      // Generate new audio
-      audioUrl = await generateTwiAudio(twiWord);
-      
-      if (audioUrl) {
-        // Cache it
-        cacheAudioUrl(twiWord, audioUrl);
-        console.log('💾 Cached audio URL');
-      }
-    } else {
-      console.log('⚡ Using cached audio');
+    if (!supportsWebSpeechAPI()) {
+      console.warn('⚠️ Web Speech API not supported. Cannot play audio.');
+      return false;
     }
     
-    if (audioUrl) {
-      console.log('▶️ Playing audio from URL');
-      const success = await playAudio(audioUrl);
-      return success;
-    }
+    const success = await playTwiWithWebSpeech(twiWord);
+    cacheAudioPreference(twiWord, success);
     
-    console.warn('❌ Could not generate audio for:', twiWord);
-    return false;
+    console.log(`🎵 Play result: ${success}`);
+    return success;
   } catch (error) {
-    console.error('Error playing Twi word:', error);
+    console.error('❌ Error playing Twi word:', error);
     return false;
   }
 };
 
+// Ensure voices are loaded (some browsers load voices asynchronously)
+if (window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = () => {
+    console.log('🎤 Available voices updated');
+  };
+}
+
 export default {
-  generateTwiAudio,
-  playAudio,
   playTwiWord,
-  cacheAudioUrl,
-  getCachedAudioUrl,
   clearAudioCache,
+  supportsWebSpeechAPI,
+  getOptimalVoice,
 };
