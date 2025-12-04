@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { playWord, clearPronunciationCache } from '../services/pronunciationService';
+import { playTwiWord } from '../services/audioService';
 
 const WordCard = ({ word, onPlayAudio }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -7,8 +7,8 @@ const WordCard = ({ word, onPlayAudio }) => {
   const handlePlayPronunciation = async () => {
     setIsPlaying(true);
     try {
-      console.log('Playing word:', word.word);
-      await playWord(word.word, word.pronunciation);
+      console.log('Button clicked for word:', word.word);
+      await playTwiWord(word.word);
     } catch (error) {
       console.error('Error playing pronunciation:', error);
     } finally {
