@@ -1,113 +1,327 @@
-// Verified Twi/Akan Dictionary - Comprehensive with 80+ authentic words
-// Curated from authentic Akan language sources
-// Includes pronouns, verbs, nouns, greetings, and cultural phrases
+// Verified Twi/Akan Dictionary - 300 authentic words curated by native speaker
+// All words verified by Albert Arthur (native Twi speaker)
+// Organized by difficulty level for progressive learning
 
 export const VERIFIED_TWI_DICTIONARY = {
   easy: [
-    // Pronouns & Basic Words
-    { word: "Me", pronunciation: "meh", definition: "I / Me", category: "easy", region: "Twi" },
-    { word: "Wo", pronunciation: "woh", definition: "You (singular)", category: "easy", region: "Twi" },
-    { word: "Ɔ", pronunciation: "aw", definition: "He / She / It", category: "easy", region: "Twi" },
-    { word: "Yɛ", pronunciation: "yeh", definition: "We", category: "easy", region: "Twi" },
-    { word: "Mo", pronunciation: "moh", definition: "They", category: "easy", region: "Twi" },
-    { word: "Wɔn", pronunciation: "wohn", definition: "Their", category: "easy", region: "Twi" },
-    
-    // Basic Verbs
-    { word: "De", pronunciation: "deh", definition: "Is / Are", category: "easy", region: "Twi" },
-    { word: "Se", pronunciation: "seh", definition: "Say / Tell", category: "easy", region: "Twi" },
-    { word: "So", pronunciation: "soh", definition: "Go", category: "easy", region: "Twi" },
-    { word: "Pa", pronunciation: "pah", definition: "Hide / Put", category: "easy", region: "Twi" },
-    { word: "Ha", pronunciation: "hah", definition: "Take", category: "easy", region: "Twi" },
-    { word: "Tutu", pronunciation: "too-too", definition: "Sit", category: "easy", region: "Twi" },
-    
-    // Basic Nouns
-    { word: "Bi", pronunciation: "bee", definition: "One / A", category: "easy", region: "Twi" },
-    { word: "Ho", pronunciation: "hoh", definition: "There / That place", category: "easy", region: "Twi" },
-    { word: "No", pronunciation: "noh", definition: "The / That", category: "easy", region: "Twi" },
-    { word: "Ade", pronunciation: "ah-deh", definition: "Thing", category: "easy", region: "Twi" },
-    { word: "Din", pronunciation: "din", definition: "Name", category: "easy", region: "Twi" },
-    { word: "Aburow", pronunciation: "ah-boo-roh", definition: "Husband", category: "easy", region: "Twi" },
+    { word: "Akwaaba", pronunciation: "Ah-kwa-bah", definition: "Welcome", category: "easy", region: "Twi" },
+    { word: "Medaase", pronunciation: "Meh-dah-seh", definition: "Thank you", category: "easy", region: "Twi" },
+    { word: "Maakye", pronunciation: "Mah-kyeh", definition: "Good morning", category: "easy", region: "Twi" },
+    { word: "Meakye", pronunciation: "Meh-ah-kyeh", definition: "Good morning / I'm fine", category: "easy", region: "Twi" },
+    { word: "Daabi", pronunciation: "Dah-bee", definition: "No", category: "easy", region: "Twi" },
+    { word: "Aane", pronunciation: "Ah-neh", definition: "Yes / Okay", category: "easy", region: "Twi" },
+    { word: "Eye", pronunciation: "Eh-yeh", definition: "Yes (agreement)", category: "easy", region: "Twi" },
+    { word: "Abusua", pronunciation: "Ah-bu-sua", definition: "Family", category: "easy", region: "Twi" },
+    { word: "Agya", pronunciation: "Ah-ja", definition: "Father", category: "easy", region: "Twi" },
+    { word: "Maame", pronunciation: "Mah-meh", definition: "Mother", category: "easy", region: "Twi" },
+    { word: "Abɔfra", pronunciation: "Ah-bor-fra", definition: "Child", category: "easy", region: "Twi" },
+    { word: "Ɔbarima", pronunciation: "Or-ba-ri-ma", definition: "Man/Boy", category: "easy", region: "Twi" },
+    { word: "Obaa", pronunciation: "Oh-bah", definition: "Woman/Girl", category: "easy", region: "Twi" },
+    { word: "Aduane", pronunciation: "Ah-du-a-neh", definition: "Food", category: "easy", region: "Twi" },
+    { word: "Nsuo", pronunciation: "N-su-oh", definition: "Water", category: "easy", region: "Twi" },
+    { word: "Di", pronunciation: "Di", definition: "To eat", category: "easy", region: "Twi" },
+    { word: "Nom", pronunciation: "Nom", definition: "To drink", category: "easy", region: "Twi" }
   ],
   
   intermediate: [
-    // Common Verbs
-    { word: "Kɔ", pronunciation: "kaw", definition: "Go", category: "intermediate", region: "Twi" },
-    { word: "Nom", pronunciation: "nohm", definition: "Eat", category: "intermediate", region: "Twi" },
-    { word: "Nom nsa", pronunciation: "nohm n-sah", definition: "Drink water", category: "intermediate", region: "Twi" },
-    { word: "Odɔ", pronunciation: "oh-daw", definition: "Love", category: "intermediate", region: "Twi" },
-    { word: "Ani", pronunciation: "ah-nee", definition: "Come", category: "intermediate", region: "Twi" },
-    { word: "Dua", pronunciation: "doo-ah", definition: "Sleep", category: "intermediate", region: "Twi" },
-    { word: "Kɔm", pronunciation: "kawm", definition: "Hold / Keep", category: "intermediate", region: "Twi" },
-    { word: "Pem", pronunciation: "pem", definition: "Push", category: "intermediate", region: "Twi" },
-    { word: "Tsi", pronunciation: "tsee", definition: "Buy", category: "intermediate", region: "Twi" },
-    { word: "Soa", pronunciation: "soh-ah", definition: "Pull", category: "intermediate", region: "Twi" },
-    { word: "Gyina", pronunciation: "jin-ah", definition: "Stand", category: "intermediate", region: "Twi" },
-    { word: "Fata", pronunciation: "fah-tah", definition: "Finish / End", category: "intermediate", region: "Twi" },
-    
-    // Common Nouns & Adjectives
-    { word: "Ɔbarima", pronunciation: "aw-bah-ree-mah", definition: "Man", category: "intermediate", region: "Twi" },
-    { word: "Obaa", pronunciation: "oh-bah", definition: "Woman", category: "intermediate", region: "Twi" },
-    { word: "Abofra", pronunciation: "ah-boh-frah", definition: "Child", category: "intermediate", region: "Twi" },
-    { word: "Kooko", pronunciation: "koh-oh-koh", definition: "Grandmother", category: "intermediate", region: "Twi" },
-    { word: "Ɔpa", pronunciation: "aw-pah", definition: "Grandfather", category: "intermediate", region: "Twi" },
-    { word: "Nsa", pronunciation: "n-sah", definition: "Water", category: "intermediate", region: "Twi" },
-    { word: "Ɛnam", pronunciation: "eh-nahm", definition: "Meat", category: "intermediate", region: "Twi" },
-    { word: "Aduane", pronunciation: "ah-doo-ah-neh", definition: "Food", category: "intermediate", region: "Twi" },
-    { word: "Aban", pronunciation: "ah-bahn", definition: "House", category: "intermediate", region: "Twi" },
-    { word: "Papa", pronunciation: "pah-pah", definition: "Father", category: "intermediate", region: "Twi" },
-    { word: "Maame", pronunciation: "mah-meh", definition: "Mother", category: "intermediate", region: "Twi" },
+    { word: "Kɔ", pronunciation: "Kor", definition: "To go", category: "intermediate", region: "Twi" },
+    { word: "Bra", pronunciation: "Bra", definition: "To come", category: "intermediate", region: "Twi" },
+    { word: "Adwuma", pronunciation: "Ah-dwu-ma", definition: "Work/Labor", category: "intermediate", region: "Twi" },
+    { word: "Sukuu", pronunciation: "Su-kuu", definition: "School", category: "intermediate", region: "Twi" },
+    { word: "Anigye", pronunciation: "Ah-ni-jeh", definition: "Happy/Joy", category: "intermediate", region: "Twi" },
+    { word: "Awerɛhoɔ", pronunciation: "Ah-weh-reh-hor", definition: "Sad", category: "intermediate", region: "Twi" },
+    { word: "Fɛ", pronunciation: "Feh", definition: "Beautiful", category: "intermediate", region: "Twi" },
+    { word: "Ɔdɔ", pronunciation: "Or-dor", definition: "Love", category: "intermediate", region: "Twi" },
+    { word: "Onyame", pronunciation: "On-ya-meh", definition: "God", category: "intermediate", region: "Twi" },
+    { word: "Anɔpa", pronunciation: "Ah-nor-pa", definition: "Morning", category: "intermediate", region: "Twi" },
+    { word: "Awia", pronunciation: "Ah-wi-ah", definition: "Afternoon", category: "intermediate", region: "Twi" },
+    { word: "Anwummerɛ", pronunciation: "An-wum-meh-reh", definition: "Evening", category: "intermediate", region: "Twi" },
+    { word: "Anadwo", pronunciation: "Ah-na-dwo", definition: "Night", category: "intermediate", region: "Twi" },
+    { word: "Baako", pronunciation: "Bah-ko", definition: "One", category: "intermediate", region: "Twi" },
+    { word: "Mmienu", pronunciation: "M-mi-e-nu", definition: "Two", category: "intermediate", region: "Twi" },
+    { word: "Mmiɛnsa", pronunciation: "M-mi-en-sa", definition: "Three", category: "intermediate", region: "Twi" },
+    { word: "Anan", pronunciation: "Ah-nan", definition: "Four", category: "intermediate", region: "Twi" },
+    { word: "Enum", pronunciation: "Eh-num", definition: "Five", category: "intermediate", region: "Twi" },
+    { word: "Nsia", pronunciation: "N-si-ah", definition: "Six", category: "intermediate", region: "Twi" },
+    { word: "Nson", pronunciation: "N-son", definition: "Seven", category: "intermediate", region: "Twi" },
+    { word: "Nwɔtwe", pronunciation: "N-wor-chwi", definition: "Eight", category: "intermediate", region: "Twi" },
+    { word: "Nkron", pronunciation: "N-kron", definition: "Nine", category: "intermediate", region: "Twi" },
+    { word: "Edu", pronunciation: "Eh-du", definition: "Ten", category: "intermediate", region: "Twi" },
+    { word: "Ti", pronunciation: "Ti", definition: "Head", category: "intermediate", region: "Twi" },
+    { word: "Ani", pronunciation: "Ah-ni", definition: "Eye", category: "intermediate", region: "Twi" },
+    { word: "Ano", pronunciation: "Ah-no", definition: "Mouth", category: "intermediate", region: "Twi" },
+    { word: "Nsa", pronunciation: "N-sa", definition: "Hand", category: "intermediate", region: "Twi" },
+    { word: "Nan", pronunciation: "Nan", definition: "Leg/Foot", category: "intermediate", region: "Twi" },
+    { word: "Yafunu", pronunciation: "Ya-fu-nu", definition: "Stomach/Belly", category: "intermediate", region: "Twi" },
+    { word: "Kɔkɔɔ", pronunciation: "Kor-kor", definition: "Red", category: "intermediate", region: "Twi" },
+    { word: "Fufuo", pronunciation: "Fu-fu-oh", definition: "White", category: "intermediate", region: "Twi" },
+    { word: "Tuntum", pronunciation: "Tun-tum", definition: "Black", category: "intermediate", region: "Twi" },
+    { word: "Bruu", pronunciation: "Bruu", definition: "Blue", category: "intermediate", region: "Twi" },
+    { word: "Ahabanmono", pronunciation: "Ah-ha-ban-mo-no", definition: "Green", category: "intermediate", region: "Twi" },
+    { word: "Akokɔsradeɛ", pronunciation: "Ah-ko-kor-sra-dee-eh", definition: "Yellow", category: "intermediate", region: "Twi" },
+    { word: "Benkum", pronunciation: "Ben-kum", definition: "Left", category: "intermediate", region: "Twi" },
+    { word: "Nifa", pronunciation: "Ni-fa", definition: "Right", category: "intermediate", region: "Twi" }
   ],
   
   difficult: [
-    // Greetings & Social Phrases
-    { word: "Maakye", pronunciation: "mah-kyeh", definition: "Good morning", category: "difficult", region: "Twi" },
-    { word: "Meakye", pronunciation: "meh-ah-kyeh", definition: "Good morning / I'm fine", category: "difficult", region: "Twi" },
-    { word: "Maadekwan", pronunciation: "mah-deh-kwahn", definition: "Good afternoon", category: "difficult", region: "Twi" },
-    { word: "Akwaaba", pronunciation: "ah-kwah-bah", definition: "Welcome", category: "difficult", region: "Twi" },
-    { word: "Medaase", pronunciation: "meh-dah-seh", definition: "Thank you", category: "difficult", region: "Twi" },
-    { word: "Daasewoɔ", pronunciation: "dah-seh-woh-uh", definition: "Thank you (plural)", category: "difficult", region: "Twi" },
-    { word: "Se me kae", pronunciation: "seh meh kah-eh", definition: "Please", category: "difficult", region: "Twi" },
-    
-    // Questions & Common Phrases
-    { word: "Ɛte sɛn?", pronunciation: "eh-teh sehn", definition: "How are you?", category: "difficult", region: "Twi" },
-    { word: "Me din de...", pronunciation: "meh din deh", definition: "My name is...", category: "difficult", region: "Twi" },
-    { word: "Wo din sɛn?", pronunciation: "woh din sehn", definition: "What is your name?", category: "difficult", region: "Twi" },
-    { word: "Ɔtwa sɛn?", pronunciation: "aw-twah sehn", definition: "How much is it?", category: "difficult", region: "Twi" },
-    { word: "Wo aba frɔ hwan?", pronunciation: "woh ah-bah fruh hwahn", definition: "Where do you come from?", category: "difficult", region: "Twi" },
-    { word: "Wo yɔɔ?", pronunciation: "woh yuh-uh", definition: "Are you okay?", category: "difficult", region: "Twi" },
-    
-    // Affection & Relationships
-    { word: "Me dɔ wo", pronunciation: "meh daw woh", definition: "I love you", category: "difficult", region: "Twi" },
-    { word: "Me din", pronunciation: "meh din", definition: "Sweetheart / My darling", category: "difficult", region: "Twi" },
-    { word: "Ɔdɔ", pronunciation: "oh-daw", definition: "Love / Beloved", category: "difficult", region: "Twi" },
-    { word: "Me kunu", pronunciation: "meh koo-noo", definition: "My sweetheart", category: "difficult", region: "Twi" },
-    
-    // Yes, No, and Responses
-    { word: "Daabi", pronunciation: "dah-bee", definition: "No", category: "difficult", region: "Twi" },
-    { word: "Aane", pronunciation: "ah-neh", definition: "Yes / Okay", category: "difficult", region: "Twi" },
-    { word: "Eye", pronunciation: "eh-yeh", definition: "Okay / Yes (agreement)", category: "difficult", region: "Twi" },
-    
-    // Cultural & Spiritual
-    { word: "Ɔbɛ me maakye", pronunciation: "aw-beh meh mah-kyeh", definition: "Have a good morning", category: "difficult", region: "Twi" },
-    { word: "Nyame", pronunciation: "nyah-meh", definition: "God", category: "difficult", region: "Twi" },
-    { word: "Onyankopɔn", pronunciation: "oh-nyahn-koh-pohn", definition: "Almighty God", category: "difficult", region: "Twi" },
-    { word: "Adinkra", pronunciation: "ah-din-krah", definition: "Adinkra symbol (cultural)", category: "difficult", region: "Twi" },
-    { word: "Kwame", pronunciation: "kwah-meh", definition: "Saturday born (male)", category: "difficult", region: "Twi" },
-    { word: "Akosua", pronunciation: "ah-koh-soo-ah", definition: "Sunday born (female)", category: "difficult", region: "Twi" },
+    { word: "Akonwa", pronunciation: "Ah-kon-wa", definition: "Chair", category: "difficult", region: "Twi" },
+    { word: "Pon", pronunciation: "Pon", definition: "Table", category: "difficult", region: "Twi" },
+    { word: "Pono", pronunciation: "Po-no", definition: "Door", category: "difficult", region: "Twi" },
+    { word: "Mfensere", pronunciation: "M-fen-seh-reh", definition: "Window", category: "difficult", region: "Twi" },
+    { word: "Fam", pronunciation: "Fam", definition: "Floor/Ground", category: "difficult", region: "Twi" },
+    { word: "Ban", pronunciation: "Ban", definition: "Wall", category: "difficult", region: "Twi" },
+    { word: "Suphy", pronunciation: "Su-fee", definition: "Roof", category: "difficult", region: "Twi" },
+    { word: "Pia", pronunciation: "Pee-ah", definition: "Room", category: "difficult", region: "Twi" },
+    { word: "Daeɛ", pronunciation: "Da-ee-eh", definition: "Bedroom", category: "difficult", region: "Twi" },
+    { word: "Mpa", pronunciation: "M-pa", definition: "Bed", category: "difficult", region: "Twi" },
+    { word: "Kɛtɛ", pronunciation: "Keh-teh", definition: "Mat", category: "difficult", region: "Twi" },
+    { word: "Sumiiɛ", pronunciation: "Su-mee-eh", definition: "Pillow", category: "difficult", region: "Twi" },
+    { word: "Praeɛ", pronunciation: "Pra-ee-eh", definition: "Broom", category: "difficult", region: "Twi" },
+    { word: "Ahwehwɛ", pronunciation: "Ah-weh-weh", definition: "Mirror", category: "difficult", region: "Twi" },
+    { word: "Afafie", pronunciation: "Ah-fa-fee-eh", definition: "Comb", category: "difficult", region: "Twi" },
+    { word: "Gyaade", pronunciation: "Jaa-deh", definition: "Kitchen", category: "difficult", region: "Twi" },
+    { word: "Gya", pronunciation: "Ja", definition: "Fire", category: "difficult", region: "Twi" },
+    { word: "Mbukyia", pronunciation: "M-bu-chia", definition: "Coal Pot", category: "difficult", region: "Twi" },
+    { word: "Kuku", pronunciation: "Ku-ku", definition: "Pot/Cooking Pan", category: "difficult", region: "Twi" },
+    { word: "Sekan", pronunciation: "Se-kan", definition: "Knife", category: "difficult", region: "Twi" },
+    { word: "Atere", pronunciation: "Ah-teh-reh", definition: "Spoon", category: "difficult", region: "Twi" },
+    { word: "Fɔɔk", pronunciation: "Fawk", definition: "Fork", category: "difficult", region: "Twi" },
+    { word: "Prɛte", pronunciation: "Preh-teh", definition: "Plate", category: "difficult", region: "Twi" },
+    { word: "Kɔɔpo", pronunciation: "Kor-po", definition: "Cup", category: "difficult", region: "Twi" },
+    { word: "Wɔma", pronunciation: "Wor-ma", definition: "Mortar", category: "difficult", region: "Twi" },
+    { word: "Wɔma-ba", pronunciation: "Wor-ma-ba", definition: "Pestle", category: "difficult", region: "Twi" },
+    { word: "Ayowa", pronunciation: "Ah-yo-wa", definition: "Bowl", category: "difficult", region: "Twi" },
+    { word: "Bokiti", pronunciation: "Bo-ki-ti", definition: "Bucket", category: "difficult", region: "Twi" },
+    { word: "Wisie", pronunciation: "Wi-see-eh", definition: "Smoke", category: "difficult", region: "Twi" },
+    { word: "Dwareɛ", pronunciation: "Jwa-ree-eh", definition: "Bathroom", category: "difficult", region: "Twi" },
+    { word: "Samina", pronunciation: "Sa-mi-na", definition: "Soap", category: "difficult", region: "Twi" },
+    { word: "Sapɔ", pronunciation: "Sa-por", definition: "Sponge", category: "difficult", region: "Twi" },
+    { word: "Mpopaho", pronunciation: "M-po-pa-ho", definition: "Towel", category: "difficult", region: "Twi" },
+    { word: "Tiafi", pronunciation: "Tee-ah-fi", definition: "Toilet", category: "difficult", region: "Twi" },
+    { word: "Twom", pronunciation: "Chwom", definition: "Toothbrush", category: "difficult", region: "Twi" },
+    { word: "Si", pronunciation: "See", definition: "To wash (clothes)", category: "difficult", region: "Twi" },
+    { word: "Dware", pronunciation: "Jwa-reh", definition: "To wash (body)", category: "difficult", region: "Twi" },
+    { word: "Hohoro", pronunciation: "Ho-ho-ro", definition: "To wash (dishes)", category: "difficult", region: "Twi" },
+    { word: "Fie", pronunciation: "Fee-eh", definition: "House/Home", category: "difficult", region: "Twi" },
+    { word: "Ahemfie", pronunciation: "Ah-hem-fee-eh", definition: "Chief's Palace", category: "difficult", region: "Twi" },
+    { word: "Ɔhene", pronunciation: "Oh-he-ne", definition: "Chief", category: "difficult", region: "Twi" },
+    { word: "Ohemaa", pronunciation: "Oh-he-maa", definition: "Queen Mother", category: "difficult", region: "Twi" },
+    { word: "Ayaresabea", pronunciation: "Ah-ya-re-sa-bee-ah", definition: "Hospital", category: "difficult", region: "Twi" },
+    { word: "Asɔre", pronunciation: "Ah-sor-reh", definition: "Church", category: "difficult", region: "Twi" },
+    { word: "Nkramofie", pronunciation: "N-kra-mo-fee-eh", definition: "Mosque", category: "difficult", region: "Twi" },
+    { word: "Polisifie", pronunciation: "Po-li-si-fee-eh", definition: "Police Station", category: "difficult", region: "Twi" },
+    { word: "Afuo", pronunciation: "Ah-fu-oh", definition: "Farm", category: "difficult", region: "Twi" },
+    { word: "Kuraa", pronunciation: "Ku-raa", definition: "Village", category: "difficult", region: "Twi" },
+    { word: "Kurom", pronunciation: "Ku-rom", definition: "Town/City", category: "difficult", region: "Twi" },
+    { word: "Kwanho", pronunciation: "Kwan-ho", definition: "Street", category: "difficult", region: "Twi" },
+    { word: "Kyerɛkyerɛni", pronunciation: "Che-reh-che-reh-ni", definition: "Teacher", category: "difficult", region: "Twi" },
+    { word: "Sukuuni", pronunciation: "Su-kuu-ni", definition: "Student", category: "difficult", region: "Twi" },
+    { word: "Dɔkota", pronunciation: "Dɔ-ko-ta", definition: "Doctor", category: "difficult", region: "Twi" },
+    { word: "Okuafoɔ", pronunciation: "Oh-kua-four", definition: "Farmer", category: "difficult", region: "Twi" },
+    { word: "Draeva", pronunciation: "Dra-e-va", definition: "Driver", category: "difficult", region: "Twi" },
+    { word: "Polisini", pronunciation: "Po-li-si-ni", definition: "Police", category: "difficult", region: "Twi" },
+    { word: "Sogya", pronunciation: "So-ja", definition: "Soldier", category: "difficult", region: "Twi" },
+    { word: "Sɔfoɔ", pronunciation: "Sor-four", definition: "Pastor", category: "difficult", region: "Twi" },
+    { word: "Korɔmfoɔ", pronunciation: "Ko-rom-four", definition: "Thief", category: "difficult", region: "Twi" },
+    { word: "Dua", pronunciation: "Du-ah", definition: "Tree", category: "difficult", region: "Twi" },
+    { word: "Ahaban", pronunciation: "Ah-ha-ban", definition: "Leaf", category: "difficult", region: "Twi" },
+    { word: "Nhwiren", pronunciation: "N-hwi-ren", definition: "Flower", category: "difficult", region: "Twi" },
+    { word: "Boɔ", pronunciation: "Bo-or", definition: "Stone", category: "difficult", region: "Twi" },
+    { word: "Wia", pronunciation: "Wee-ah", definition: "Sand", category: "difficult", region: "Twi" },
+    { word: "Dɔteɛ", pronunciation: "Dor-tee-eh", definition: "Mud/Soil", category: "difficult", region: "Twi" },
+    { word: "Asuo", pronunciation: "Ah-su-oh", definition: "River", category: "difficult", region: "Twi" },
+    { word: "Po", pronunciation: "Po", definition: "Sea/Ocean", category: "difficult", region: "Twi" },
+    { word: "Bepɔ", pronunciation: "Beh-por", definition: "Mountain", category: "difficult", region: "Twi" },
+    { word: "Wiem", pronunciation: "Wee-em", definition: "Sky", category: "difficult", region: "Twi" },
+    { word: "Nsoromma", pronunciation: "N-so-rom-ma", definition: "Star", category: "difficult", region: "Twi" },
+    { word: "Mframa", pronunciation: "M-fra-ma", definition: "Wind", category: "difficult", region: "Twi" },
+    { word: "Kwaeɛ", pronunciation: "K-wa-ee-eh", definition: "Forest", category: "difficult", region: "Twi" },
+    { word: "Wura", pronunciation: "Wu-ra", definition: "Bush", category: "difficult", region: "Twi" },
+    { word: "Mfuturo", pronunciation: "M-fu-tu-ro", definition: "Dust", category: "difficult", region: "Twi" },
+    { word: "Mununkum", pronunciation: "Mu-nun-kum", definition: "Cloud", category: "difficult", region: "Twi" },
+    { word: "Aprannaa", pronunciation: "Ah-pran-naa", definition: "Thunder", category: "difficult", region: "Twi" },
+    { word: "Anyinam", pronunciation: "An-yi-nam", definition: "Lightning", category: "difficult", region: "Twi" },
+    { word: "Aboa", pronunciation: "Ah-bu-ah", definition: "Animal", category: "difficult", region: "Twi" },
+    { word: "Kraman", pronunciation: "Kra-man", definition: "Dog", category: "difficult", region: "Twi" },
+    { word: "Agyna", pronunciation: "Ah-ji-na", definition: "Cat", category: "difficult", region: "Twi" },
+    { word: "Apɔnkye", pronunciation: "Ah-pon-chi", definition: "Goat", category: "difficult", region: "Twi" },
+    { word: "Odwan", pronunciation: "Oh-dwan", definition: "Sheep", category: "difficult", region: "Twi" },
+    { word: "Nantwie", pronunciation: "Nan-chwie", definition: "Cow", category: "difficult", region: "Twi" },
+    { word: "Anomaa", pronunciation: "Ah-no-maa", definition: "Bird", category: "difficult", region: "Twi" },
+    { word: "Akokɔberɛ", pronunciation: "Ah-ko-kor-beh-reh", definition: "Chicken (Hen)", category: "difficult", region: "Twi" },
+    { word: "Akokɔnini", pronunciation: "Ah-ko-kor-ni-ni", definition: "Rooster/Cock", category: "difficult", region: "Twi" },
+    { word: "Ɔwɔ", pronunciation: "Or-wor", definition: "Snake", category: "difficult", region: "Twi" },
+    { word: "Kətəre", pronunciation: "Ke-te-reh", definition: "Lizard", category: "difficult", region: "Twi" },
+    { word: "Apataa", pronunciation: "Ah-pa-taa", definition: "Fish", category: "difficult", region: "Twi" },
+    { word: "Gyata", pronunciation: "Ja-ta", definition: "Lion", category: "difficult", region: "Twi" },
+    { word: "Ɛsono", pronunciation: "Eh-so-no", definition: "Elephant", category: "difficult", region: "Twi" },
+    { word: "Ntontom", pronunciation: "N-ton-tom", definition: "Mosquito", category: "difficult", region: "Twi" },
+    { word: "Nwansena", pronunciation: "N-wan-se-na", definition: "Fly", category: "difficult", region: "Twi" },
+    { word: "Ananse", pronunciation: "Ah-nan-se", definition: "Spider", category: "difficult", region: "Twi" },
+    { word: "Hye", pronunciation: "Sh-eh", definition: "Hot", category: "difficult", region: "Twi" },
+    { word: "Awɔ", pronunciation: "Ah-wor", definition: "Cold", category: "difficult", region: "Twi" },
+    { word: "Den", pronunciation: "Den", definition: "Hard", category: "difficult", region: "Twi" },
+    { word: "Merɛ", pronunciation: "Meh-reh", definition: "Soft", category: "difficult", region: "Twi" },
+    { word: "Dɛ", pronunciation: "Deh", definition: "Sweet", category: "difficult", region: "Twi" },
+    { word: "Nwon", pronunciation: "N-won", definition: "Bitter", category: "difficult", region: "Twi" },
+    { word: "Te", pronunciation: "Teh", definition: "Clean", category: "difficult", region: "Twi" },
+    { word: "Fi", pronunciation: "Fee", definition: "Dirty", category: "difficult", region: "Twi" },
+    { word: "Yɛ", pronunciation: "Yeh", definition: "Full", category: "difficult", region: "Twi" },
+    { word: "Foforɔ", pronunciation: "Fo-fo-ror", definition: "New", category: "difficult", region: "Twi" },
+    { word: "Dada", pronunciation: "Da-da", definition: "Old", category: "difficult", region: "Twi" },
+    { word: "Duso", pronunciation: "Du-so", definition: "Heavy", category: "difficult", region: "Twi" },
+    { word: "Hare", pronunciation: "Ha-reh", definition: "Light (weight)", category: "difficult", region: "Twi" },
+    { word: "Tentene", pronunciation: "Ten-te-neh", definition: "Tall/Long", category: "difficult", region: "Twi" },
+    { word: "Tia", pronunciation: "Tee-ah", definition: "Short", category: "difficult", region: "Twi" },
+    { word: "Pii", pronunciation: "Pee", definition: "Many/Plenty", category: "difficult", region: "Twi" },
+    { word: "Kakra", pronunciation: "Ka-kra", definition: "Few", category: "difficult", region: "Twi" },
+    { word: "Nyinaa", pronunciation: "Nyi-naa", definition: "All", category: "difficult", region: "Twi" },
+    { word: "Hwee", pronunciation: "Sh-wee", definition: "None", category: "difficult", region: "Twi" },
+    { word: "Borɔdɔma", pronunciation: "Bo-rod-or-ma", definition: "Brown", category: "difficult", region: "Twi" },
+    { word: "Sika Kɔkɔɔ", pronunciation: "Si-ka kor-kor", definition: "Gold", category: "difficult", region: "Twi" },
+    { word: "Dwetɛ", pronunciation: "Jwe-teh", definition: "Silver", category: "difficult", region: "Twi" },
+    { word: "Hama", pronunciation: "Ha-ma", definition: "Hammer", category: "difficult", region: "Twi" },
+    { word: "Dadewa", pronunciation: "Da-de-wa", definition: "Nail", category: "difficult", region: "Twi" },
+    { word: "Asɔ", pronunciation: "Ah-sor", definition: "Hoe", category: "difficult", region: "Twi" },
+    { word: "Ayie", pronunciation: "Ah-yee-eh", definition: "Funeral", category: "difficult", region: "Twi" },
+    { word: "Awarɛ", pronunciation: "Ah-wa-reh", definition: "Wedding/Marriage", category: "difficult", region: "Twi" },
+    { word: "Nhyiamu", pronunciation: "N-shee-a-mu", definition: "Meeting", category: "difficult", region: "Twi" },
+    { word: "Afahyɛ", pronunciation: "Ah-fa-sheh", definition: "Festival", category: "difficult", region: "Twi" },
+    { word: "Dinotoɔ", pronunciation: "Din-oh-tor", definition: "Naming Ceremony", category: "difficult", region: "Twi" },
+    { word: "Atadeɛ", pronunciation: "Ah-ta-dee-eh", definition: "Shirt", category: "difficult", region: "Twi" },
+    { word: "Tross", pronunciation: "Tross", definition: "Trousers", category: "difficult", region: "Twi" },
+    { word: "Kyɛ", pronunciation: "Cheh", definition: "Hat", category: "difficult", region: "Twi" },
+    { word: "Ntoma", pronunciation: "N-to-ma", definition: "Cloth (Traditional)", category: "difficult", region: "Twi" },
+    { word: "Asoboa", pronunciation: "Ah-so-bu-ah", definition: "Earring", category: "difficult", region: "Twi" },
+    { word: "Ahene", pronunciation: "Ah-he-ne", definition: "Beads", category: "difficult", region: "Twi" },
+    { word: "Ntokota", pronunciation: "N-to-ko-ta", definition: "Sandals", category: "difficult", region: "Twi" },
+    { word: "Noa", pronunciation: "No-ah", definition: "To cook", category: "difficult", region: "Twi" },
+    { word: "Pra", pronunciation: "Pra", definition: "To sweep", category: "difficult", region: "Twi" },
+    { word: "Nante", pronunciation: "Nan-te", definition: "To walk", category: "difficult", region: "Twi" },
+    { word: "Tu mmirika", pronunciation: "Tu m-mi-ri-ka", definition: "To run", category: "difficult", region: "Twi" },
+    { word: "Da", pronunciation: "Da", definition: "To sleep", category: "difficult", region: "Twi" },
+    { word: "Sɔre", pronunciation: "Sor-reh", definition: "To wake up", category: "difficult", region: "Twi" },
+    { word: "Sua adeɛ", pronunciation: "Sua ah-dee-eh", definition: "To learn", category: "difficult", region: "Twi" },
+    { word: "Kyerɛ adeɛ", pronunciation: "Che-reh ah-dee-eh", definition: "To teach", category: "difficult", region: "Twi" },
+    { word: "Bɔ mpaeɛ", pronunciation: "Bor m-pa-ee-eh", definition: "To pray", category: "difficult", region: "Twi" },
+    { word: "To dwom", pronunciation: "To jwom", definition: "To sing", category: "difficult", region: "Twi" },
+    { word: "Sa", pronunciation: "Sa", definition: "To dance", category: "difficult", region: "Twi" },
+    { word: "Su", pronunciation: "Su", definition: "To cry", category: "difficult", region: "Twi" },
+    { word: "Sere", pronunciation: "Se-reh", definition: "To laugh", category: "difficult", region: "Twi" },
+    { word: "Di agorɔ", pronunciation: "Di ah-go-ror", definition: "To play", category: "difficult", region: "Twi" },
+    { word: "Ko", pronunciation: "Ko", definition: "To fight", category: "difficult", region: "Twi" },
+    { word: "Bue", pronunciation: "Bu-eh", definition: "To open", category: "difficult", region: "Twi" },
+    { word: "To mu", pronunciation: "To mu", definition: "To close", category: "difficult", region: "Twi" },
+    { word: "Pue", pronunciation: "Pu-eh", definition: "To go out", category: "difficult", region: "Twi" },
+    { word: "Ma", pronunciation: "Ma", definition: "To give", category: "difficult", region: "Twi" },
+    { word: "Gye", pronunciation: "Jeh", definition: "To take/receive", category: "difficult", region: "Twi" },
+    { word: "Fa bra", pronunciation: "Fa bra", definition: "To bring", category: "difficult", region: "Twi" },
+    { word: "So", pronunciation: "So", definition: "To carry", category: "difficult", region: "Twi" },
+    { word: "Ma so", pronunciation: "Ma so", definition: "To lift", category: "difficult", region: "Twi" },
+    { word: "Gu", pronunciation: "Gu", definition: "To drop/pour", category: "difficult", region: "Twi" },
+    { word: "Twe", pronunciation: "Ch-weh", definition: "To pull", category: "difficult", region: "Twi" },
+    { word: "Twa", pronunciation: "Ch-wa", definition: "To cut", category: "difficult", region: "Twi" },
+    { word: "Bɔ", pronunciation: "Bor", definition: "To break", category: "difficult", region: "Twi" },
+    { word: "Siesie", pronunciation: "See-eh-see-eh", definition: "To fix/repair", category: "difficult", region: "Twi" },
+    { word: "Pepa", pronunciation: "Pe-pa", definition: "To clean/wipe", category: "difficult", region: "Twi" },
+    { word: "Foro", pronunciation: "Fo-ro", definition: "To climb", category: "difficult", region: "Twi" },
+    { word: "Huri", pronunciation: "Hu-ri", definition: "To jump", category: "difficult", region: "Twi" },
+    { word: "Di nkunim", pronunciation: "Di n-ku-nim", definition: "To win", category: "difficult", region: "Twi" },
+    { word: "Di nkoguo", pronunciation: "Di n-ko-gu-oh", definition: "To lose", category: "difficult", region: "Twi" },
+    { word: "Asew", pronunciation: "Ah-sew", definition: "In-law", category: "difficult", region: "Twi" },
+    { word: "Abusuafoɔ", pronunciation: "Ah-bu-sua-four", definition: "Relative", category: "difficult", region: "Twi" },
+    { word: "Onipa", pronunciation: "Oh-ni-pa", definition: "Person", category: "difficult", region: "Twi" },
+    { word: "Opanyin", pronunciation: "Oh-pan-yin", definition: "Elder", category: "difficult", region: "Twi" },
+    { word: "Akwadaa", pronunciation: "Ah-kwa-daa", definition: "Child (Small)", category: "difficult", region: "Twi" },
+    { word: "Ɔhɔhoɔ", pronunciation: "Oh-ho-hor", definition: "Stranger/Guest", category: "difficult", region: "Twi" },
+    { word: "Yɔnkoɔ", pronunciation: "Yon-ko-or", definition: "Neighbor", category: "difficult", region: "Twi" },
+    { word: "Tamfo", pronunciation: "Tam-fo", definition: "Enemy", category: "difficult", region: "Twi" },
+    { word: "Siminti", pronunciation: "Si-min-ti", definition: "Cement", category: "difficult", region: "Twi" },
+    { word: "Block", pronunciation: "Block", definition: "Block/Brick", category: "difficult", region: "Twi" },
+    { word: "Dankama", pronunciation: "Dan-ka-ma", definition: "Iron Sheet (Roofing)", category: "difficult", region: "Twi" },
+    { word: "Kasamframa", pronunciation: "Ka-sam-fra-ma", definition: "Radio", category: "difficult", region: "Twi" },
+    { word: "TV", pronunciation: "Ti-Vi", definition: "Television", category: "difficult", region: "Twi" },
+    { word: "Telephon", pronunciation: "Te-le-fon", definition: "Telephone", category: "difficult", region: "Twi" },
+    { word: "Fidie", pronunciation: "Fi-dee-eh", definition: "Fridge", category: "difficult", region: "Twi" },
+    { word: "Ayane", pronunciation: "Ah-ya-neh", definition: "Iron", category: "difficult", region: "Twi" },
+    { word: "Kanea", pronunciation: "Ka-ne-ah", definition: "Light/Lamp", category: "difficult", region: "Twi" },
+    { word: "Nwoma", pronunciation: "N-wo-ma", definition: "Book", category: "difficult", region: "Twi" },
+    { word: "Pɛn", pronunciation: "Pen", definition: "Pen", category: "difficult", region: "Twi" },
+    { word: "Pɛnsere", pronunciation: "Pen-seh-reh", definition: "Pencil", category: "difficult", region: "Twi" },
+    { word: "Hwio", pronunciation: "Sh-wee-oh", definition: "Chalk", category: "difficult", region: "Twi" },
+    { word: "Sukuu bag", pronunciation: "Su-kuu bag", definition: "School Bag", category: "difficult", region: "Twi" },
+    { word: "Aduro", pronunciation: "Ah-du-ro", definition: "Medicine", category: "difficult", region: "Twi" },
+    { word: "Paneɛ", pronunciation: "Pa-nee-eh", definition: "Injection", category: "difficult", region: "Twi" },
+    { word: "Nɛɛse", pronunciation: "Neh-se", definition: "Nurse", category: "difficult", region: "Twi" },
+    { word: "Kuro", pronunciation: "Ku-ro", definition: "Wound/Sore", category: "difficult", region: "Twi" },
+    { word: "Mogya", pronunciation: "Mo-ja", definition: "Blood", category: "difficult", region: "Twi" },
+    { word: "Tipaeɛ", pronunciation: "Ti-pa-ee-eh", definition: "Headache", category: "difficult", region: "Twi" },
+    { word: "Yafunu yareɛ", pronunciation: "Ya-fu-nu ya-reh", definition: "Stomach Ache", category: "difficult", region: "Twi" },
+    { word: "Huraeɛ", pronunciation: "Hu-ra-ee-eh", definition: "Fever", category: "difficult", region: "Twi" },
+    { word: "Wa", pronunciation: "Wa", definition: "Cough", category: "difficult", region: "Twi" },
+    { word: "Ɛdwoada", pronunciation: "Eh-jwo-ah-da", definition: "Monday", category: "difficult", region: "Twi" },
+    { word: "Ɛbenada", pronunciation: "Eh-ben-ah-da", definition: "Tuesday", category: "difficult", region: "Twi" },
+    { word: "Wukuada", pronunciation: "Wu-ku-ah-da", definition: "Wednesday", category: "difficult", region: "Twi" },
+    { word: "Yawoada", pronunciation: "Ya-wo-ah-da", definition: "Thursday", category: "difficult", region: "Twi" },
+    { word: "Efiada", pronunciation: "Eh-fee-ah-da", definition: "Friday", category: "difficult", region: "Twi" },
+    { word: "Memeneda", pronunciation: "Me-me-neh-da", definition: "Saturday", category: "difficult", region: "Twi" },
+    { word: "Kwasiada", pronunciation: "Kwa-see-ah-da", definition: "Sunday", category: "difficult", region: "Twi" },
+    { word: "Nawotwe", pronunciation: "Na-wo-chwi", definition: "Week", category: "difficult", region: "Twi" },
+    { word: "Bosome", pronunciation: "Bo-so-me", definition: "Month", category: "difficult", region: "Twi" },
+    { word: "Afe", pronunciation: "Ah-feh", definition: "Year", category: "difficult", region: "Twi" },
+    { word: "Adaka", pronunciation: "Ah-da-ka", definition: "Box", category: "difficult", region: "Twi" },
+    { word: "Bɔtɔ", pronunciation: "Bor-tor", definition: "Bag", category: "difficult", region: "Twi" },
+    { word: "Kɛntɛn", pronunciation: "Ken-ten", definition: "Basket", category: "difficult", region: "Twi" },
+    { word: "Toaa", pronunciation: "To-aa", definition: "Bottle", category: "difficult", region: "Twi" },
+    { word: "Glass", pronunciation: "Glass", definition: "Glass (Cup)", category: "difficult", region: "Twi" },
+    { word: "Safoa", pronunciation: "Sa-fo-ah", definition: "Key", category: "difficult", region: "Twi" },
+    { word: "Dadeɛ", pronunciation: "Da-dee-eh", definition: "Lock/Padlock", category: "difficult", region: "Twi" },
+    { word: "Sika krataa", pronunciation: "Si-ka kra-taa", definition: "Paper Money", category: "difficult", region: "Twi" },
+    { word: "Dɔtɔ", pronunciation: "Dor-tor", definition: "Coin", category: "difficult", region: "Twi" },
+    { word: "Store", pronunciation: "Store", definition: "Shop/Store", category: "difficult", region: "Twi" },
+    { word: "Ofese", pronunciation: "Oh-fe-se", definition: "Office", category: "difficult", region: "Twi" },
+    { word: "Asɛmmisa", pronunciation: "Ah-sem-mi-sa", definition: "Question", category: "difficult", region: "Twi" },
+    { word: "Mmuaeɛ", pronunciation: "M-mu-a-ee-eh", definition: "Answer/Reply", category: "difficult", region: "Twi" },
+    { word: "Anansesɛm", pronunciation: "Ah-nan-se-sem", definition: "Story", category: "difficult", region: "Twi" },
+    { word: "Dwom", pronunciation: "Jwom", definition: "Song", category: "difficult", region: "Twi" },
+    { word: "Twene", pronunciation: "Ch-we-neh", definition: "Drum", category: "difficult", region: "Twi" },
+    { word: "Agorɔ", pronunciation: "Ah-go-ror", definition: "Game", category: "difficult", region: "Twi" },
+    { word: "Bɔɔlo", pronunciation: "Bor-lo", definition: "Ball", category: "difficult", region: "Twi" },
+    { word: "Kuo", pronunciation: "Ku-oh", definition: "Team/Group", category: "difficult", region: "Twi" },
+    { word: "Nokware", pronunciation: "No-kwa-reh", definition: "Truth", category: "difficult", region: "Twi" },
+    { word: "Atoro", pronunciation: "Ah-to-ro", definition: "Lie", category: "difficult", region: "Twi" },
+    { word: "Obuo", pronunciation: "Oh-bu-oh", definition: "Respect", category: "difficult", region: "Twi" },
+    { word: "Aboasetɔ", pronunciation: "Ah-bo-a-se-tor", definition: "Patience", category: "difficult", region: "Twi" },
+    { word: "Nyansa", pronunciation: "N-yan-sa", definition: "Wisdom", category: "difficult", region: "Twi" },
+    { word: "Ahoɔden", pronunciation: "Ah-ho-den", definition: "Strength", category: "difficult", region: "Twi" },
+    { word: "Mmerɛ", pronunciation: "M-meh-reh", definition: "Weakness", category: "difficult", region: "Twi" },
+    { word: "Nkwa", pronunciation: "N-kwa", definition: "Life", category: "difficult", region: "Twi" },
+    { word: "Owuo", pronunciation: "Oh-wu-oh", definition: "Death", category: "difficult", region: "Twi" },
+    { word: "Tan", pronunciation: "Tan", definition: "Hate", category: "difficult", region: "Twi" },
+    { word: "Ehu", pronunciation: "Eh-hu", definition: "Fear", category: "difficult", region: "Twi" },
+    { word: "Abufuo", pronunciation: "Ah-bu-fu-oh", definition: "Anger", category: "difficult", region: "Twi" },
+    { word: "Aniwuo", pronunciation: "Ah-ni-wu-oh", definition: "Shame", category: "difficult", region: "Twi" },
+    { word: "Ɔbɔfoɔ", pronunciation: "Or-bor-four", definition: "Angel", category: "difficult", region: "Twi" },
+    { word: "Ɔbonsam", pronunciation: "Or-bon-sam", definition: "Devil", category: "difficult", region: "Twi" },
+    { word: "Honhom", pronunciation: "Hon-hom", definition: "Spirit", category: "difficult", region: "Twi" },
+    { word: "Kra", pronunciation: "Kra", definition: "Soul", category: "difficult", region: "Twi" },
+    { word: "Mpaebɔ", pronunciation: "M-pa-eh-bor", definition: "Prayer", category: "difficult", region: "Twi" },
+    { word: "Abosomfie", pronunciation: "Ah-bo-som-fee-eh", definition: "Shrine", category: "difficult", region: "Twi" },
+    { word: "Som", pronunciation: "Som", definition: "Religion/Worship", category: "difficult", region: "Twi" },
+    { word: "Kristoni", pronunciation: "Kris-to-ni", definition: "Christian", category: "difficult", region: "Twi" },
+    { word: "Nkramoni", pronunciation: "N-kra-mo-ni", definition: "Muslim", category: "difficult", region: "Twi" }
   ]
 };
-// Function to get random word from a category
+
 export const getRandomWord = (category = 'intermediate') => {
   const words = VERIFIED_TWI_DICTIONARY[category] || VERIFIED_TWI_DICTIONARY.intermediate;
   return words[Math.floor(Math.random() * words.length)];
 };
 
-// Function to get multiple random words without repetition
 export const getRandomWords = (category = 'intermediate', count = 3) => {
   const words = VERIFIED_TWI_DICTIONARY[category] || VERIFIED_TWI_DICTIONARY.intermediate;
   const result = [];
   const indices = new Set();
-  
   while (result.length < Math.min(count, words.length)) {
     const randomIndex = Math.floor(Math.random() * words.length);
     if (!indices.has(randomIndex)) {
@@ -115,11 +329,9 @@ export const getRandomWords = (category = 'intermediate', count = 3) => {
       result.push(words[randomIndex]);
     }
   }
-  
   return result;
 };
 
-// Get all words
 export const getAllWords = () => {
   return [
     ...VERIFIED_TWI_DICTIONARY.easy,
@@ -128,12 +340,10 @@ export const getAllWords = () => {
   ];
 };
 
-// Get words by category
 export const getWordsByCategory = (category) => {
   return VERIFIED_TWI_DICTIONARY[category] || [];
 };
 
-// Get word count stats
 export const getWordStats = () => {
   return {
     easy: VERIFIED_TWI_DICTIONARY.easy.length,
@@ -143,7 +353,6 @@ export const getWordStats = () => {
   };
 };
 
-// Search words by keyword (in definition or word)
 export const searchWords = (query) => {
   const lowerQuery = query.toLowerCase();
   return getAllWords().filter(word =>
@@ -152,12 +361,10 @@ export const searchWords = (query) => {
   );
 };
 
-// Get words by region
 export const getWordsByRegion = (region = 'Twi') => {
   return getAllWords().filter(word => word.region === region);
 };
 
-// Generate daily word (consistent throughout the day)
 export const getDailyWord = () => {
   const allWords = getAllWords();
   const today = new Date();
