@@ -10,10 +10,16 @@ const WordCard = ({ word, onPlayAudio }) => {
       console.log('🎵 Button clicked for word:', word.word);
       const result = await playTwiWord(word.word);
       console.log('🎵 Play result:', result);
+      if (!result) {
+        console.warn('⚠️ Audio playback may have failed - check Web Speech API support');
+      }
     } catch (error) {
       console.error('Error playing pronunciation:', error);
     } finally {
-      setIsPlaying(false);
+      // Keep button disabled for a brief moment even after speech completes
+      setTimeout(() => {
+        setIsPlaying(false);
+      }, 200);
     }
   };
 
@@ -42,6 +48,7 @@ const WordCard = ({ word, onPlayAudio }) => {
           <button
             onClick={handlePlayPronunciation}
             disabled={isPlaying}
+            title="Click to hear the Twi pronunciation"
             className="group flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg

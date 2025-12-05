@@ -94,6 +94,12 @@ function App() {
     }
   };
 
+  const handlePracticeComplete = () => {
+    // Always show Jollof quiz after practice (regardless of score)
+    setAppMode('learn');
+    setShowJollofQuiz(true);
+  };
+
   const handleSelectWord = (index) => {
     setCurrentWordIndex(index);
   };
@@ -160,7 +166,7 @@ function App() {
         <PracticeMode
           words={getTwiWords('all')}
           selectedCategory={selectedCategory}
-          onClose={() => setAppMode('learn')}
+          onClose={handlePracticeComplete}
           onEarnPoints={handleEarnPoints}
         />
       </div>

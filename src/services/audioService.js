@@ -13,7 +13,12 @@ const supportsWebSpeechAPI = () => {
 const getOptimalVoice = () => {
   if (!supportsWebSpeechAPI()) return null;
   
-  const voices = window.speechSynthesis?.getVoices?.() || [];
+  let voices = window.speechSynthesis?.getVoices?.() || [];
+  
+  // If voices not loaded yet, return null and let the main function retry
+  if (voices.length === 0) {
+    return null;
+  }
   
   // Preference order for Twi pronunciation:
   // 1. African locale voices (close to West African)
@@ -34,7 +39,7 @@ const getOptimalVoice = () => {
 };
 
 // Play Twi word using Web Speech API
-const playTwiWithWebSpeech = (twiWord) => {
+const playTwiWithWebSpeech = async (twiWord) => {
   return new Promise((resolve) => {
     try {
       if (!supportsWebSpeechAPI()) {
@@ -44,7 +49,9 @@ const playTwiWithWebSpeech = (twiWord) => {
       }
       
       // Cancel any ongoing speech
-      window.speechSynthesis?.cancel?.();
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
       
       const utterance = new (window.SpeechSynthesisUtterance || window.webkitSpeechSynthesisUtterance)(twiWord);
       
@@ -52,13 +59,26 @@ const playTwiWithWebSpeech = (twiWord) => {
       utterance.rate = 0.8; // Slower for clarity
       utterance.pitch = 1.0; // Natural pitch
       utterance.volume = 1.0; // Max volume
+      utterance.lang = 'twi'; // Ensure Twi language
       
       // Try to use optimal voice
       const voice = getOptimalVoice();
-      if (voice) {
+      if (voice && voice.name) {
         utterance.voice = voice;
         console.log(`🎤 Using voice: ${voice.name}`);
+      } else {
+        console.log('🎤 Using default system voice');
       }
+      
+      // Set a timeout to resolve after speech completes
+      let hasResolved = false;
+      const timeoutId = setTimeout(() => {
+        if (!hasResolved) {
+          hasResolved = true;
+          console.log('✅ Speech completed (timeout)');
+          resolve(true);
+        }
+      }, 3000); // 3 second timeout
       
       // Event handlers
       utterance.onstart = () => {
@@ -66,18 +86,27 @@ const playTwiWithWebSpeech = (twiWord) => {
       };
       
       utterance.onend = () => {
-        console.log('✅ Speech ended successfully');
-        resolve(true);
+        if (!hasResolved) {
+          hasResolved = true;
+          clearTimeout(timeoutId);
+          console.log('✅ Speech ended successfully');
+          resolve(true);
+        }
       };
       
       utterance.onerror = (error) => {
-        console.error('❌ Speech error:', error.error);
-        resolve(false);
+        if (!hasResolved) {
+          hasResolved = true;
+          clearTimeout(timeoutId);
+          console.error('❌ Speech error:', error.error);
+          resolve(false);
+        }
       };
       
       // Speak the word
-      window.speechSynthesis?.speak?.(utterance);
-      
+      if (window.speechSynthesis) {
+        window.speechSynthesis.speak(utterance);
+      }
     } catch (error) {
       console.error('❌ Error with Web Speech API:', error);
       resolve(false);
@@ -113,6 +142,18 @@ export const playTwiWord = async (twiWord) => {
     if (!supportsWebSpeechAPI()) {
       console.warn('⚠️ Web Speech API not supported. Cannot play audio.');
       return false;
+    }
+    
+    // Ensure voices are loaded
+    if (window.speechSynthesis && !window.speechSynthesis.getVoices().length) {
+      await new Promise(resolve => {
+        const handleVoicesChanged = () => {
+          window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
+          resolve();
+        };
+        window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
+        setTimeout(resolve, 500);
+      });
     }
     
     const success = await playTwiWithWebSpeech(twiWord);

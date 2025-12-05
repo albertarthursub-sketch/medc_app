@@ -30,9 +30,16 @@ const PracticeMode = ({ words, selectedCategory, onClose, onEarnPoints }) => {
 
   const handleCheckAnswer = () => {
     const cleanUserAnswer = userAnswer.toLowerCase().trim();
-    const cleanCorrectAnswer = currentWord.definition.toLowerCase().trim();
+    
+    // Handle multiple answers separated by slashes (e.g. "Woman/Girl")
+    const possibleAnswers = currentWord.definition
+      .split('/')
+      .map(answer => answer.toLowerCase().trim())
+      .filter(answer => answer.length > 0);
 
-    if (cleanUserAnswer === cleanCorrectAnswer) {
+    const isCorrect = possibleAnswers.includes(cleanUserAnswer);
+
+    if (isCorrect) {
       setFeedback('✅ Correct! +10 Ghana Cedis');
       setCorrect(correct + 1);
       onEarnPoints(10);
