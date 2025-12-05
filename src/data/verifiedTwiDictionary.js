@@ -4,23 +4,54 @@
 
 export const VERIFIED_TWI_DICTIONARY = {
   easy: [
+    // Basic greetings and common phrases
     { word: "Akwaaba", pronunciation: "Ah-kwa-bah", definition: "Welcome", category: "easy", region: "Twi" },
     { word: "Medaase", pronunciation: "Meh-dah-seh", definition: "Thank you", category: "easy", region: "Twi" },
     { word: "Maakye", pronunciation: "Mah-kyeh", definition: "Good morning", category: "easy", region: "Twi" },
-    { word: "Meakye", pronunciation: "Meh-ah-kyeh", definition: "Good morning / I'm fine", category: "easy", region: "Twi" },
+    { word: "Meakye", pronunciation: "Meh-ah-kyeh", definition: "Good morning/I'm fine", category: "easy", region: "Twi" },
     { word: "Daabi", pronunciation: "Dah-bee", definition: "No", category: "easy", region: "Twi" },
-    { word: "Aane", pronunciation: "Ah-neh", definition: "Yes / Okay", category: "easy", region: "Twi" },
+    { word: "Aane", pronunciation: "Ah-neh", definition: "Yes/Okay", category: "easy", region: "Twi" },
     { word: "Eye", pronunciation: "Eh-yeh", definition: "Yes (agreement)", category: "easy", region: "Twi" },
+    { word: "Me din de", pronunciation: "Meh din deh", definition: "My name is", category: "easy", region: "Twi" },
+    
+    // Short 2-3 letter words with special characters
+    { word: "Kye", pronunciation: "Kyeh", definition: "Come/Go", category: "easy", region: "Twi" },
+    { word: "Ɔk", pronunciation: "Ork", definition: "OK/Alright", category: "easy", region: "Twi" },
+    { word: "Gye", pronunciation: "Jeh", definition: "Hold/Grab", category: "easy", region: "Twi" },
+    { word: "Fɔ", pronunciation: "Faw", definition: "For/Give", category: "easy", region: "Twi" },
+    { word: "Mε", pronunciation: "Meh", definition: "To me", category: "easy", region: "Twi" },
+    { word: "Yɔ", pronunciation: "Yor", definition: "It/That", category: "easy", region: "Twi" },
+    
+    // Family words
     { word: "Abusua", pronunciation: "Ah-bu-sua", definition: "Family", category: "easy", region: "Twi" },
     { word: "Agya", pronunciation: "Ah-ja", definition: "Father", category: "easy", region: "Twi" },
     { word: "Maame", pronunciation: "Mah-meh", definition: "Mother", category: "easy", region: "Twi" },
     { word: "Abɔfra", pronunciation: "Ah-bor-fra", definition: "Child", category: "easy", region: "Twi" },
     { word: "Ɔbarima", pronunciation: "Or-ba-ri-ma", definition: "Man/Boy", category: "easy", region: "Twi" },
     { word: "Obaa", pronunciation: "Oh-bah", definition: "Woman/Girl", category: "easy", region: "Twi" },
+    { word: "Nuanom", pronunciation: "Nu-ah-nom", definition: "Brother/Sister", category: "easy", region: "Twi" },
+    
+    // Food and drink
     { word: "Aduane", pronunciation: "Ah-du-a-neh", definition: "Food", category: "easy", region: "Twi" },
     { word: "Nsuo", pronunciation: "N-su-oh", definition: "Water", category: "easy", region: "Twi" },
+    { word: "Nua", pronunciation: "Nu-ah", definition: "Bread", category: "easy", region: "Twi" },
+    { word: "Kɔ", pronunciation: "Kor", definition: "To go", category: "easy", region: "Twi" },
     { word: "Di", pronunciation: "Di", definition: "To eat", category: "easy", region: "Twi" },
-    { word: "Nom", pronunciation: "Nom", definition: "To drink", category: "easy", region: "Twi" }
+    { word: "Nom", pronunciation: "Nom", definition: "To drink", category: "easy", region: "Twi" },
+    
+    // Simple action words
+    { word: "Da", pronunciation: "Dah", definition: "To sleep", category: "easy", region: "Twi" },
+    { word: "Tu", pronunciation: "Tu", definition: "To sit/Stay", category: "easy", region: "Twi" },
+    { word: "Hyɛ", pronunciation: "Hyeh", definition: "To hit/Strike", category: "easy", region: "Twi" },
+    { word: "Kasa", pronunciation: "Kah-sah", definition: "To speak/Talk", category: "easy", region: "Twi" },
+    { word: "Teɛ", pronunciation: "Teh", definition: "To look/See", category: "easy", region: "Twi" },
+    { word: "Tie", pronunciation: "Tie", definition: "To listen/Hear", category: "easy", region: "Twi" },
+    
+    // Simple adjectives
+    { word: "Kɛse", pronunciation: "Keh-seh", definition: "Big/Great", category: "easy", region: "Twi" },
+    { word: "Ketewa", pronunciation: "Keh-teh-wah", definition: "Small", category: "easy", region: "Twi" },
+    { word: "Pa", pronunciation: "Pah", definition: "Good", category: "easy", region: "Twi" },
+    { word: "Nyinaa", pronunciation: "Nyi-nah", definition: "All", category: "easy", region: "Twi" },
   ],
 
   intermediate: [

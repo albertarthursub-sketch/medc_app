@@ -23,7 +23,7 @@ function App() {
   const [appMode, setAppMode] = useState('learn'); // 'learn' or 'practice'
   const [ghanaCedis, setGhanaCedis] = useState(0);
   const [showRewardScreen, setShowRewardScreen] = useState(false);
-  const [showJollofQuiz, setShowJollofQuiz] = useState(false);
+  const [showJollofQuizBeforePractice, setShowJollofQuizBeforePractice] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
   // Generate initial batch of words on app load
@@ -95,9 +95,19 @@ function App() {
   };
 
   const handlePracticeComplete = () => {
-    // Always show Jollof quiz after practice (regardless of score)
+    // After practice, return to learn mode smoothly
     setAppMode('learn');
-    setShowJollofQuiz(true);
+  };
+
+  const handleStartPractice = () => {
+    // Show Jollof quiz first before starting practice
+    setShowJollofQuizBeforePractice(true);
+  };
+
+  const handleJollofAnswerBeforePractice = () => {
+    // User answered Jollof quiz, now start practice mode
+    setShowJollofQuizBeforePractice(false);
+    setAppMode('practice');
   };
 
   const handleSelectWord = (index) => {
@@ -139,24 +149,35 @@ function App() {
 
   const handleContinueToJollof = () => {
     setShowRewardScreen(false);
-    setShowJollofQuiz(true);
+    // After reaching 100 GHS, just continue learning
+    // Jollof quiz now appears before practice instead
   };
 
   const handleGhanaChoice = () => {
     setGhanaCedis(prev => prev + 50);
-    setShowJollofQuiz(false);
-    setAppMode('learn');
+    setShowJollofQuizBeforePractice(false);
   };
 
   const handleNigeriaChoice = () => {
-    setShowJollofQuiz(false);
+    setShowJollofQuizBeforePractice(false);
     // Show breakup message in an alert for now
     alert('💔 I am breaking up with you 2pm tomorrow hahaha 💔\n\nThat\'s what you get for choosing Nigerian Jollof! 😭');
-    setAppMode('learn');
   };
 
   if (showWelcome) {
     return <WelcomeScreen onContinue={() => setShowWelcome(false)} />;
+  }
+
+  // Show Jollof Quiz before practice starts
+  if (showJollofQuizBeforePractice) {
+    return (
+      <div className="min-h-screen">
+        <JollofQuiz
+          onGhanaChoice={handleGhanaChoice}
+          onNigeriaChoice={handleNigeriaChoice}
+        />
+      </div>
+    );
   }
 
   // Show Practice Mode
@@ -180,18 +201,6 @@ function App() {
         <RewardScreen
           cedis={ghanaCedis}
           onContinueToJollof={handleContinueToJollof}
-        />
-      </div>
-    );
-  }
-
-  // Show Jollof Quiz
-  if (showJollofQuiz) {
-    return (
-      <div className="min-h-screen">
-        <JollofQuiz
-          onGhanaChoice={handleGhanaChoice}
-          onNigeriaChoice={handleNigeriaChoice}
         />
       </div>
     );
@@ -303,7 +312,7 @@ function App() {
         isLoading={isLoadingMore}
         onChangeCategory={() => setShowCategorySelector(true)}
         currentCategory={selectedCategory}
-        onStartPractice={() => setAppMode('practice')}
+        onStartPractice={handleStartPractice}
         ghanaCedis={ghanaCedis}
         onShowSearch={() => setShowSearch(true)}
       />
