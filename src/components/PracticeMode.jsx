@@ -1,12 +1,13 @@
 import { useState } from 'react';
 
-const PracticeMode = ({ words, selectedCategory, onClose, onEarnPoints }) => {
+const PracticeMode = ({ words, selectedCategory, onClose, onEarnPoints, onPracticeComplete }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState('');
   const [showFeedback, setShowFeedback] = useState(false);
   const [skipped, setSkipped] = useState(0);
   const [correct, setCorrect] = useState(0);
+  const [totalPointsThisSession, setTotalPointsThisSession] = useState(0);
 
   const categoryWords = words.filter(w => w.category === selectedCategory);
 
@@ -42,6 +43,7 @@ const PracticeMode = ({ words, selectedCategory, onClose, onEarnPoints }) => {
     if (isCorrect) {
       setFeedback('✅ Correct! +10 Ghana Cedis');
       setCorrect(correct + 1);
+      setTotalPointsThisSession(totalPointsThisSession + 10);
       onEarnPoints(10);
     } else {
       setFeedback(`❌ Wrong! It means: ${currentWord.definition}`);
@@ -62,7 +64,12 @@ const PracticeMode = ({ words, selectedCategory, onClose, onEarnPoints }) => {
       setFeedback('');
       setShowFeedback(false);
     } else {
-      onClose();
+      // Practice is complete, show achievement screen
+      onPracticeComplete({
+        pointsEarned: totalPointsThisSession,
+        wordsPracticed: categoryWords.length,
+        category: selectedCategory
+      });
     }
   };
 

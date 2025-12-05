@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { goofyMessages } from '../data/twiWords';
 
-const WelcomeScreen = ({ onContinue }) => {
+const WelcomeScreen = ({ onContinue, onShowJollofQuiz }) => {
   const [message, setMessage] = useState('');
   const [fadeOut, setFadeOut] = useState(false);
 
@@ -14,7 +14,8 @@ const WelcomeScreen = ({ onContinue }) => {
   const handleContinue = () => {
     setFadeOut(true);
     setTimeout(() => {
-      onContinue();
+      // Show Jollof quiz first, then onContinue after
+      onShowJollofQuiz();
     }, 500);
   };
 

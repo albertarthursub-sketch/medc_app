@@ -8,10 +8,16 @@ import PracticeMode from './components/PracticeMode';
 import RewardScreen from './components/RewardScreen';
 import JollofQuiz from './components/JollofQuiz';
 import WordSearch from './components/WordSearch';
+import AuthScreen from './components/AuthScreen';
+import AchievementScreen from './components/AchievementScreen';
 import { getTwiWords, addDynamicWord, addMultipleDynamicWords, WORD_CATEGORIES } from './data/twiWords';
 import { generateTwiWord, generateMultipleTwiWords, getCachedWord, cacheWord, clearCache } from './services/llmService';
+import { updateUserAfterPractice, updateUserStreak } from './services/firebaseService';
+import { useAuth } from './contexts/AuthContext';
 
 function App() {
+  const { user, userProfile, loading: authLoading, setUserProfile } = useAuth();
+  
   const [showWelcome, setShowWelcome] = useState(true);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [showHistory, setShowHistory] = useState(false);
@@ -23,11 +29,22 @@ function App() {
   const [appMode, setAppMode] = useState('learn'); // 'learn' or 'practice'
   const [ghanaCedis, setGhanaCedis] = useState(0);
   const [showRewardScreen, setShowRewardScreen] = useState(false);
-  const [showJollofQuizBeforePractice, setShowJollofQuizBeforePractice] = useState(false);
+  const [showJollofQuizAtStart, setShowJollofQuizAtStart] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [showAchievementScreen, setShowAchievementScreen] = useState(false);
+  const [lastPracticeStats, setLastPracticeStats] = useState(null);
+
+  // Set initial points from user profile
+  useEffect(() => {
+    if (userProfile) {
+      setGhanaCedis(userProfile.totalPointsEarned || 0);
+    }
+  }, [userProfile]);
 
   // Generate initial batch of words on app load
   useEffect(() => {
+    if (authLoading) return; // Wait for auth to load
+    
     const initializeWords = async () => {
       setIsInitializing(true);
       try {
@@ -94,20 +111,71 @@ function App() {
     }
   };
 
-  const handlePracticeComplete = () => {
-    // After practice, return to learn mode smoothly
+  const handlePracticeComplete = (stats) => {
+    // Save practice stats and show achievement screen
+    const updatedUser = updateUserAfterPractice(
+      currentUser.userId,
+      stats.pointsEarned,
+      stats.wordsPracticed,
+      stats.category
+    );
+    
+    setCurrentUser(updatedUser);
+    
+    // Check if badge was newly unlocked
+    const previousBadgeCount = currentUser.badgesEarned.length;
+    const newBadgeUnlocked = updatedUser.badgesEarned.length > previousBadgeCount;
+    
+    setLastPracticeStats({
+      ...stats,
+      totalWordsPracticed: updatedUser.totalWordsPracticed,
+      totalPointsEarned: updatedUser.totalPointsEarned,
+      newBadgeUnlocked
+    });
+    
+    setShowAchievementScreen(true);
     setAppMode('learn');
   };
 
   const handleStartPractice = () => {
-    // Show Jollof quiz first before starting practice
-    setShowJollofQuizBeforePractice(true);
+    // Practice mode - go directly to practice (no Jollof quiz)
+    setAppMode('practice');
   };
 
-  const handleJollofAnswerBeforePractice = () => {
-    // User answered Jollof quiz, now start practice mode
-    setShowJollofQuizBeforePractice(false);
-    setAppMode('practice');
+  const handleAuthSuccess = async (authUser) => {
+    // User has successfully authenticated
+    setShowWelcome(false);
+    // Words will be initialized by useEffect after auth loads
+  };
+
+  const handlePracticeStats = (stats) => {
+    // Called from PracticeMode when practice completes
+    if (!user) return;
+
+    // Update Firebase with new stats
+    updateUserAfterPractice(user.uid, stats.pointsEarned, stats.wordsPracticed, stats.category)
+      .then((updatedData) => {
+        // Update local state with new profile data
+        setUserProfile(updatedData);
+        setGhanaCedis(updatedData.totalPointsEarned);
+        
+        setLastPracticeStats({
+          ...stats,
+          totalWordsPracticed: updatedData.totalWordsPracticed,
+          totalPointsEarned: updatedData.totalPointsEarned,
+          newBadgeUnlocked: updatedData.newBadgeUnlocked,
+        });
+        
+        setShowAchievementScreen(true);
+        setAppMode('learn');
+
+        // Update streak
+        updateUserStreak(user.uid);
+      })
+      .catch((error) => {
+        console.error('Error updating practice stats:', error);
+        alert('Error saving your progress. Please try again.');
+      });
   };
 
   const handleSelectWord = (index) => {
@@ -155,26 +223,75 @@ function App() {
 
   const handleGhanaChoice = () => {
     setGhanaCedis(prev => prev + 50);
-    setShowJollofQuizBeforePractice(false);
   };
 
   const handleNigeriaChoice = () => {
-    setShowJollofQuizBeforePractice(false);
     // Show breakup message in an alert for now
     alert('💔 I am breaking up with you 2pm tomorrow hahaha 💔\n\nThat\'s what you get for choosing Nigerian Jollof! 😭');
   };
 
-  if (showWelcome) {
-    return <WelcomeScreen onContinue={() => setShowWelcome(false)} />;
+  // Show loading while authentication is being checked
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-pink-50 via-orange-50 to-yellow-50">
+        <div className="text-center">
+          <div className="inline-block">
+            <div className="w-16 h-16 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin mb-4"></div>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Loading Your Profile</h2>
+          <p className="text-gray-600">Preparing your Twi learning journey...</p>
+        </div>
+      </div>
+    );
   }
 
-  // Show Jollof Quiz before practice starts
-  if (showJollofQuizBeforePractice) {
+  // Show Auth Screen if user is not logged in
+  if (!user) {
+    return (
+      <AuthScreen onAuthSuccess={handleAuthSuccess} />
+    );
+  }
+
+  if (showWelcome) {
+    return (
+      <WelcomeScreen 
+        onContinue={() => setShowWelcome(false)} 
+        onShowJollofQuiz={() => {
+          setShowWelcome(false);
+          setShowJollofQuizAtStart(true);
+        }}
+      />
+    );
+  }
+
+  // Show Achievement Screen after practice
+  if (showAchievementScreen && lastPracticeStats) {
+    return (
+      <AchievementScreen
+        userName={userProfile?.displayName || 'Learner'}
+        pointsEarned={lastPracticeStats.pointsEarned}
+        wordsPracticed={lastPracticeStats.wordsPracticed}
+        totalWordsPracticed={lastPracticeStats.totalWordsPracticed}
+        totalPointsEarned={lastPracticeStats.totalPointsEarned}
+        newBadgeUnlocked={lastPracticeStats.newBadgeUnlocked}
+        onContinue={() => setShowAchievementScreen(false)}
+      />
+    );
+  }
+
+  // Show Jollof Quiz at start (before learning)
+  if (showJollofQuizAtStart) {
     return (
       <div className="min-h-screen">
         <JollofQuiz
-          onGhanaChoice={handleGhanaChoice}
-          onNigeriaChoice={handleNigeriaChoice}
+          onGhanaChoice={() => {
+            handleGhanaChoice();
+            setShowJollofQuizAtStart(false);
+          }}
+          onNigeriaChoice={() => {
+            handleNigeriaChoice();
+            setShowJollofQuizAtStart(false);
+          }}
         />
       </div>
     );
@@ -187,8 +304,9 @@ function App() {
         <PracticeMode
           words={getTwiWords('all')}
           selectedCategory={selectedCategory}
-          onClose={handlePracticeComplete}
+          onClose={() => setAppMode('learn')}
           onEarnPoints={handleEarnPoints}
+          onPracticeComplete={handlePracticeStats}
         />
       </div>
     );
