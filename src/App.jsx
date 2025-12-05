@@ -8,8 +8,9 @@ import PracticeMode from './components/PracticeMode';
 import RewardScreen from './components/RewardScreen';
 import JollofQuiz from './components/JollofQuiz';
 import WordSearch from './components/WordSearch';
-import AuthScreen from './components/AuthScreen';
+import AuthContainer from './components/AuthContainer';
 import AchievementScreen from './components/AchievementScreen';
+import LearningModeSelector from './components/LearningModeSelector';
 import { getTwiWords, addDynamicWord, addMultipleDynamicWords, WORD_CATEGORIES } from './data/twiWords';
 import { generateTwiWord, generateMultipleTwiWords, getCachedWord, cacheWord, clearCache } from './services/llmService';
 import { updateUserAfterPractice, updateUserStreak } from './services/firebaseService';
@@ -19,6 +20,8 @@ function App() {
   const { user, userProfile, loading: authLoading, setUserProfile } = useAuth();
   
   const [showWelcome, setShowWelcome] = useState(true);
+  const [showLearningModeSelector, setShowLearningModeSelector] = useState(false);
+  const [selectedLearningMode, setSelectedLearningMode] = useState(null);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [showHistory, setShowHistory] = useState(false);
   const [twiWords, setTwiWords] = useState([]);
@@ -182,6 +185,13 @@ function App() {
     setCurrentWordIndex(index);
   };
 
+  const handleSelectLearningMode = (mode) => {
+    setSelectedLearningMode(mode);
+    setShowLearningModeSelector(false);
+    // Mode is now set - can be used to customize learning experience
+    // For now, 'lessons' is the default mode
+  };
+
   const handleGenerateNewWord = async () => {
     setIsLoadingMore(true);
     try {
@@ -248,17 +258,33 @@ function App() {
   // Show Auth Screen if user is not logged in
   if (!user) {
     return (
-      <AuthScreen onAuthSuccess={handleAuthSuccess} />
+      <AuthContainer onAuthSuccess={handleAuthSuccess} />
     );
   }
 
   if (showWelcome) {
     return (
       <WelcomeScreen 
-        onContinue={() => setShowWelcome(false)} 
+        onContinue={() => {
+          setShowWelcome(false);
+          setShowLearningModeSelector(true);
+        }}
         onShowJollofQuiz={() => {
           setShowWelcome(false);
           setShowJollofQuizAtStart(true);
+        }}
+      />
+    );
+  }
+
+  // Show Learning Mode Selector
+  if (showLearningModeSelector) {
+    return (
+      <LearningModeSelector
+        onSelectMode={handleSelectLearningMode}
+        onBack={() => {
+          setShowLearningModeSelector(false);
+          setShowWelcome(true);
         }}
       />
     );
