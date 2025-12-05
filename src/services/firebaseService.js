@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
@@ -19,22 +19,22 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
-// Auth Functions
-export const registerUser = async (email, password, displayName) => {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+// Google Auth Provider
+const googleProvider = new GoogleAuthProvider();
 
-    // Update profile with display name
-    await updateProfile(user, {
-      displayName: displayName,
-    });
+// Helper function to create/update user profile
+const createOrUpdateUserProfile = async (user) => {
+  const userRef = doc(db, 'users', user.uid);
+  const userDoc = await getDoc(userRef);
 
-    // Create user profile in Firestore
-    await setDoc(doc(db, 'users', user.uid), {
+  if (!userDoc.exists()) {
+    // New user - create profile
+    await setDoc(userRef, {
       uid: user.uid,
       email: user.email,
-      displayName: displayName,
+      displayName: user.displayName || 'User',
+      photoURL: user.photoURL || null,
+      authProvider: user.providerData?.[0]?.providerId || 'password',
       createdAt: serverTimestamp(),
       totalPointsEarned: 0,
       totalWordsPracticed: 0,
@@ -46,7 +46,29 @@ export const registerUser = async (email, password, displayName) => {
       totalPracticeSessions: 0,
       averageScorePercentage: 0,
     });
+  } else {
+    // Existing user - update last login
+    await updateDoc(userRef, {
+      lastLoginAt: serverTimestamp(),
+    });
+  }
 
+  return user;
+};
+
+// Auth Functions
+export const registerUser = async (email, password, displayName) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Update profile with display name
+    await updateProfile(user, {
+      displayName: displayName,
+    });
+
+    // Create user profile
+    await createOrUpdateUserProfile(user);
     return user;
   } catch (error) {
     throw new Error(error.message);
@@ -58,6 +80,23 @@ export const loginUser = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user;
   } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+
+    // Create or update user profile
+    await createOrUpdateUserProfile(user);
+
+    return user;
+  } catch (error) {
+    if (error.code === 'auth/popup-closed-by-user') {
+      throw new Error('Sign-in was cancelled');
+    }
     throw new Error(error.message);
   }
 };
