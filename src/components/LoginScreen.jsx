@@ -2,12 +2,18 @@ import { useState } from 'react';
 import { loginUser, signInWithGoogle } from '../services/firebaseService';
 
 const LoginScreen = ({ onAuthSuccess, onSwitchToSignUp }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('test@example.com');
+  const [password, setPassword] = useState('test123456');
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Test credentials helper
+  const useTestCredentials = () => {
+    setEmail('test@example.com');
+    setPassword('test123456');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -178,7 +184,7 @@ const LoginScreen = ({ onAuthSuccess, onSwitchToSignUp }) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: 27
+          marginBottom: 17
         }}>
           <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
             <input
@@ -213,6 +219,33 @@ const LoginScreen = ({ onAuthSuccess, onSwitchToSignUp }) => {
             Forgot Password
           </button>
         </div>
+
+        {/* Test Credentials Button */}
+        <button
+          type="button"
+          onClick={useTestCredentials}
+          style={{
+            width: '100%',
+            padding: '8px 12px',
+            background: '#E8F5E9',
+            border: '1px solid #4CAF50',
+            borderRadius: 8,
+            color: '#2E7D32',
+            fontSize: 13,
+            fontWeight: '600',
+            cursor: 'pointer',
+            marginBottom: 17,
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background = '#C8E6C9';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background = '#E8F5E9';
+          }}
+        >
+          ✓ Use Test Credentials (test@example.com)
+        </button>
 
         {/* Login Button */}
         <button
